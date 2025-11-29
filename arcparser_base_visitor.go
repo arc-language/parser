@@ -40,6 +40,10 @@ func (v *BaseArcParserVisitor) VisitExternFunctionDecl(ctx *ExternFunctionDeclCo
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseArcParserVisitor) VisitExternParameterList(ctx *ExternParameterListContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseArcParserVisitor) VisitFunctionDecl(ctx *FunctionDeclContext) interface{} {
 	return v.VisitChildren(ctx)
 }

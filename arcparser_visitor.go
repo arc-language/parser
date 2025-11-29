@@ -32,6 +32,9 @@ type ArcParserVisitor interface {
 	// Visit a parse tree produced by ArcParser#externFunctionDecl.
 	VisitExternFunctionDecl(ctx *ExternFunctionDeclContext) interface{}
 
+	// Visit a parse tree produced by ArcParser#externParameterList.
+	VisitExternParameterList(ctx *ExternParameterListContext) interface{}
+
 	// Visit a parse tree produced by ArcParser#functionDecl.
 	VisitFunctionDecl(ctx *FunctionDeclContext) interface{}
 

@@ -43,7 +43,13 @@ externMember
     ;
 
 externFunctionDecl
-    : FUNC IDENTIFIER (STRING_LITERAL)? LPAREN parameterList? RPAREN (ARROW type)?
+    : FUNC IDENTIFIER (STRING_LITERAL)? LPAREN externParameterList? RPAREN type?
+    ;
+
+// Extern parameters are type-only (no names required)
+externParameterList
+    : type (COMMA type)* (COMMA ELLIPSIS)?
+    | ELLIPSIS
     ;
 
 // Function Declaration

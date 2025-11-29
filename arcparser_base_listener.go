@@ -69,6 +69,12 @@ func (s *BaseArcParserListener) EnterExternFunctionDecl(ctx *ExternFunctionDeclC
 // ExitExternFunctionDecl is called when production externFunctionDecl is exited.
 func (s *BaseArcParserListener) ExitExternFunctionDecl(ctx *ExternFunctionDeclContext) {}
 
+// EnterExternParameterList is called when production externParameterList is entered.
+func (s *BaseArcParserListener) EnterExternParameterList(ctx *ExternParameterListContext) {}
+
+// ExitExternParameterList is called when production externParameterList is exited.
+func (s *BaseArcParserListener) ExitExternParameterList(ctx *ExternParameterListContext) {}
+
 // EnterFunctionDecl is called when production functionDecl is entered.
 func (s *BaseArcParserListener) EnterFunctionDecl(ctx *FunctionDeclContext) {}
 
