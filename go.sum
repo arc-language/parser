@@ -1,0 +1,10 @@
+github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYWrPrQ=
+github.com/antlr4-go/antlr/v4 v4.13.1/go.mod h1:GKmUxMtwp6ZgGwZSva4eWPC5mS6vUAmOABFgjdkM7Nw=
+github.com/arc-language/builder v0.0.0-20251129112542-f4ea212b433f h1:TosA1ubh8fzfG491bxjZfGUjuoKhNePIz0sDmLnT9e8=
+github.com/arc-language/builder v0.0.0-20251129112542-f4ea212b433f/go.mod h1:iHDubBDiGf8PWbeOZeXIq6/U5MydfrI/TJDqD49B81o=
+github.com/arc-language/ir v0.0.0-20251129112433-68c53c84e27b h1:l0D4KC7TiglnLQ5PwUDvRfKd0mBBpGHLcyjn/kSSyfE=
+github.com/arc-language/ir v0.0.0-20251129112433-68c53c84e27b/go.mod h1:THxZhxWRThIHSgz/3O876DiUG9z3gIdXqKz4kIB/96w=
+github.com/arc-language/types v0.0.0-20251128011842-1d8fb85a2ddc h1:q4SauTkuG8SaUFR9M0ndt6Gz7QY0pqjN3IprZSuU3V0=
+github.com/arc-language/types v0.0.0-20251128011842-1d8fb85a2ddc/go.mod h1:FXaM1fiRrSabL5hjclNKrmnAiZ0I4j6rLQVWjC1lEZs=
+golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 h1:vr/HnozRka3pE4EsMEg1lgkXJkTFJCVUX+S/ZT6wYzM=
+golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842/go.mod h1:XtvwrStGgqGPLc4cjQfWqZHG1YFdYs6swckp8vpsjnc=

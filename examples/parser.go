@@ -59,7 +59,11 @@ func (l *ArcPrintListener) ExitProgram(ctx *parser.ProgramContext) {
 
 func (l *ArcPrintListener) EnterFunctionDecl(ctx *parser.FunctionDeclContext) {
 	funcName := ctx.IDENTIFIER().GetText()
-	l.printIndent(fmt.Sprintf("Function: %s", funcName))
+	returnType := ""
+	if ctx.ReturnType() != nil {
+		returnType = fmt.Sprintf(" -> %s", ctx.ReturnType().GetText())
+	}
+	l.printIndent(fmt.Sprintf("Function: %s%s", funcName, returnType))
 	l.indent++
 }
 
@@ -73,7 +77,11 @@ func (l *ArcPrintListener) EnterVariableDecl(ctx *parser.VariableDeclContext) {
 	if ctx.CONST() != nil {
 		keyword = "const"
 	}
-	l.printIndent(fmt.Sprintf("Variable Declaration (%s): %s", keyword, varName))
+	typeInfo := ""
+	if ctx.TypeSpec() != nil {
+		typeInfo = fmt.Sprintf(": %s", ctx.TypeSpec().GetText())
+	}
+	l.printIndent(fmt.Sprintf("Variable Declaration (%s): %s%s", keyword, varName, typeInfo))
 	l.indent++
 }
 
@@ -93,7 +101,11 @@ func (l *ArcPrintListener) ExitStructDecl(ctx *parser.StructDeclContext) {
 
 func (l *ArcPrintListener) EnterParameter(ctx *parser.ParameterContext) {
 	paramName := ctx.IDENTIFIER().GetText()
-	l.printIndent(fmt.Sprintf("Parameter: %s", paramName))
+	typeInfo := ""
+	if ctx.TypeSpec() != nil {
+		typeInfo = fmt.Sprintf(": %s", ctx.TypeSpec().GetText())
+	}
+	l.printIndent(fmt.Sprintf("Parameter: %s%s", paramName, typeInfo))
 }
 
 func (l *ArcPrintListener) EnterReturnStmt(ctx *parser.ReturnStmtContext) {
@@ -159,7 +171,7 @@ func (l *ArcPrintListener) EnterIdentifierExpr(ctx *parser.IdentifierExprContext
 }
 
 // ParseArcFile parses an Arc language source file
-func ParseArcFile(filename string) (*parser.ProgramContext, error) {
+func ParseArcFile(filename string) (antlr.Tree, error) {
 	// Read the input file
 	input, err := antlr.NewFileStream(filename)
 	if err != nil {
