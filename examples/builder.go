@@ -48,8 +48,8 @@ func (g *IRGenerator) VisitProgram(ctx *parser.ProgramContext) interface{} {
 	}
 
 	// Second pass: generate function bodies
-	for _, declCtx := range ctx.AllDeclaration() {
-		g.Visit(declCtx)
+	for _, declCtx := range declarations {
+		declCtx.Accept(g) // Use Accept instead of Visit
 	}
 
 	return nil
@@ -108,10 +108,8 @@ func (g *IRGenerator) VisitFunctionDecl(ctx *parser.FunctionDeclContext) interfa
 	fn := g.functionMap[funcName]
 	g.currentFunc = fn
 
-	// Create entry block
-	entry := g.builder.CreateBasicBlock("entry")
-	fn.AddBlock(entry)
-	g.builder.SetInsertPoint(entry)
+	// Note: CreateFunction already created the entry block and set it as current
+	// No need to create it again here
 
 	// Create new scope
 	prevSymbols := g.symbolTable
@@ -130,7 +128,7 @@ func (g *IRGenerator) VisitFunctionDecl(ctx *parser.FunctionDeclContext) interfa
 
 	// Generate function body
 	if ctx.Block() != nil {
-		g.Visit(ctx.Block())
+		ctx.Block().Accept(g)
 	}
 
 	// Restore scope
@@ -150,7 +148,14 @@ func (g *IRGenerator) VisitVariableDecl(ctx *parser.VariableDeclContext) interfa
 
 	// Initialize if present
 	if ctx.Expression() != nil {
-		initValue := g.Visit(ctx.Expression()).(*builder.Value)
+		initValueInterface := ctx.Expression().Accept(g)
+		if initValueInterface == nil {
+			fmt.Fprintf(os.Stderr, "Error: expression returned nil for variable %s (expr type: %T)\n", 
+				varName, ctx.Expression())
+			// Create a default value based on type
+			initValueInterface = g.getDefaultValue(varType)
+		}
+		initValue := initValueInterface.(*builder.Value)
 		g.builder.CreateStore(alloca, initValue)
 	}
 
@@ -170,7 +175,7 @@ func (g *IRGenerator) VisitBlock(ctx *parser.BlockContext) interface{} {
 
 	// Visit all statements
 	for _, stmtCtx := range ctx.AllStatement() {
-		g.Visit(stmtCtx)
+		stmtCtx.Accept(g)
 	}
 
 	// Restore scope
@@ -181,7 +186,13 @@ func (g *IRGenerator) VisitBlock(ctx *parser.BlockContext) interface{} {
 // VisitReturnStmt handles return statements
 func (g *IRGenerator) VisitReturnStmt(ctx *parser.ReturnStmtContext) interface{} {
 	if ctx.Expression() != nil {
-		value := g.Visit(ctx.Expression()).(*builder.Value)
+		valueInterface := ctx.Expression().Accept(g)
+		if valueInterface == nil {
+			fmt.Fprintf(os.Stderr, "Error: return expression returned nil\n")
+			// Return a default value
+			valueInterface = g.builder.CreateInt32("", 0)
+		}
+		value := valueInterface.(*builder.Value)
 		g.builder.CreateReturn(value)
 	} else {
 		g.builder.CreateReturn(nil)
@@ -198,7 +209,14 @@ func (g *IRGenerator) VisitVarDeclStmt(ctx *parser.VarDeclStmtContext) interface
 func (g *IRGenerator) VisitAssignStmt(ctx *parser.AssignStmtContext) interface{} {
 	// Get variable name and value
 	varName := ctx.IDENTIFIER().GetText()
-	value := g.Visit(ctx.Expression()).(*builder.Value)
+	valueInterface := ctx.Expression().Accept(g)
+	
+	if valueInterface == nil {
+		fmt.Fprintf(os.Stderr, "Error: assignment expression returned nil for variable %s\n", varName)
+		valueInterface = g.builder.CreateInt32("", 0)
+	}
+	
+	value := valueInterface.(*builder.Value)
 
 	ptr, exists := g.symbolTable[varName]
 	if !exists {
@@ -212,7 +230,12 @@ func (g *IRGenerator) VisitAssignStmt(ctx *parser.AssignStmtContext) interface{}
 
 // VisitIfStatement handles if statements
 func (g *IRGenerator) VisitIfStatement(ctx *parser.IfStatementContext) interface{} {
-	condition := g.Visit(ctx.Expression()).(*builder.Value)
+	conditionInterface := ctx.Expression().Accept(g)
+	if conditionInterface == nil {
+		fmt.Fprintf(os.Stderr, "Error: if condition returned nil\n")
+		conditionInterface = g.builder.CreateBool("", false)
+	}
+	condition := conditionInterface.(*builder.Value)
 
 	thenBlock := g.builder.CreateBasicBlock("if.then")
 	elseBlock := g.builder.CreateBasicBlock("if.else")
@@ -223,14 +246,14 @@ func (g *IRGenerator) VisitIfStatement(ctx *parser.IfStatementContext) interface
 	// Then block
 	g.currentFunc.AddBlock(thenBlock)
 	g.builder.SetInsertPoint(thenBlock)
-	g.Visit(ctx.Block(0))
+	ctx.Block(0).Accept(g)
 	g.builder.CreateUnconditionalBranch(mergeBlock)
 
 	// Else block
 	g.currentFunc.AddBlock(elseBlock)
 	g.builder.SetInsertPoint(elseBlock)
 	if ctx.Block(1) != nil {
-		g.Visit(ctx.Block(1))
+		ctx.Block(1).Accept(g)
 	}
 	g.builder.CreateUnconditionalBranch(mergeBlock)
 
@@ -283,8 +306,8 @@ func (g *IRGenerator) VisitIdentifierExpr(ctx *parser.IdentifierExprContext) int
 }
 
 func (g *IRGenerator) VisitAddSubExpr(ctx *parser.AddSubExprContext) interface{} {
-	left := g.Visit(ctx.Expression(0)).(*builder.Value)
-	right := g.Visit(ctx.Expression(1)).(*builder.Value)
+	left := g.safeAcceptExpr(ctx.Expression(0), "add/sub left operand")
+	right := g.safeAcceptExpr(ctx.Expression(1), "add/sub right operand")
 	
 	op := "+"
 	if ctx.MINUS() != nil {
@@ -295,8 +318,8 @@ func (g *IRGenerator) VisitAddSubExpr(ctx *parser.AddSubExprContext) interface{}
 }
 
 func (g *IRGenerator) VisitMulDivModExpr(ctx *parser.MulDivModExprContext) interface{} {
-	left := g.Visit(ctx.Expression(0)).(*builder.Value)
-	right := g.Visit(ctx.Expression(1)).(*builder.Value)
+	left := g.safeAcceptExpr(ctx.Expression(0), "mul/div/mod left operand")
+	right := g.safeAcceptExpr(ctx.Expression(1), "mul/div/mod right operand")
 	
 	op := "*"
 	if ctx.SLASH() != nil {
@@ -309,8 +332,8 @@ func (g *IRGenerator) VisitMulDivModExpr(ctx *parser.MulDivModExprContext) inter
 }
 
 func (g *IRGenerator) VisitComparisonExpr(ctx *parser.ComparisonExprContext) interface{} {
-	left := g.Visit(ctx.Expression(0)).(*builder.Value)
-	right := g.Visit(ctx.Expression(1)).(*builder.Value)
+	left := g.safeAcceptExpr(ctx.Expression(0), "comparison left operand")
+	right := g.safeAcceptExpr(ctx.Expression(1), "comparison right operand")
 	
 	op := "<"
 	if ctx.LE() != nil {
@@ -325,8 +348,8 @@ func (g *IRGenerator) VisitComparisonExpr(ctx *parser.ComparisonExprContext) int
 }
 
 func (g *IRGenerator) VisitEqualityExpr(ctx *parser.EqualityExprContext) interface{} {
-	left := g.Visit(ctx.Expression(0)).(*builder.Value)
-	right := g.Visit(ctx.Expression(1)).(*builder.Value)
+	left := g.safeAcceptExpr(ctx.Expression(0), "equality left operand")
+	right := g.safeAcceptExpr(ctx.Expression(1), "equality right operand")
 	
 	op := "=="
 	if ctx.NE() != nil {
@@ -337,25 +360,86 @@ func (g *IRGenerator) VisitEqualityExpr(ctx *parser.EqualityExprContext) interfa
 }
 
 func (g *IRGenerator) VisitLogicalAndExpr(ctx *parser.LogicalAndExprContext) interface{} {
-	left := g.Visit(ctx.Expression(0)).(*builder.Value)
-	right := g.Visit(ctx.Expression(1)).(*builder.Value)
+	left := g.safeAcceptExpr(ctx.Expression(0), "logical and left operand")
+	right := g.safeAcceptExpr(ctx.Expression(1), "logical and right operand")
 	return g.builder.CreateBinaryOp("&&", left, right)
 }
 
 func (g *IRGenerator) VisitLogicalOrExpr(ctx *parser.LogicalOrExprContext) interface{} {
-	left := g.Visit(ctx.Expression(0)).(*builder.Value)
-	right := g.Visit(ctx.Expression(1)).(*builder.Value)
+	left := g.safeAcceptExpr(ctx.Expression(0), "logical or left operand")
+	right := g.safeAcceptExpr(ctx.Expression(1), "logical or right operand")
 	return g.builder.CreateBinaryOp("||", left, right)
 }
 
 func (g *IRGenerator) VisitUnaryMinusExpr(ctx *parser.UnaryMinusExprContext) interface{} {
-	operand := g.Visit(ctx.Expression()).(*builder.Value)
+	operand := g.safeAcceptExpr(ctx.Expression(), "unary minus operand")
 	return g.builder.CreateUnaryOp("-", operand)
 }
 
 func (g *IRGenerator) VisitLogicalNotExpr(ctx *parser.LogicalNotExprContext) interface{} {
-	operand := g.Visit(ctx.Expression()).(*builder.Value)
+	operand := g.safeAcceptExpr(ctx.Expression(), "logical not operand")
 	return g.builder.CreateUnaryOp("!", operand)
+}
+
+func (g *IRGenerator) VisitParenExpr(ctx *parser.ParenExprContext) interface{} {
+	return g.safeAcceptExpr(ctx.Expression(), "parenthesized expression")
+}
+
+func (g *IRGenerator) VisitPrimaryExpr(ctx *parser.PrimaryExprContext) interface{} {
+	// PrimaryExpr wraps the actual primary (literals, identifiers, etc.)
+	// Delegate to the primary's Accept method
+	if ctx.Primary() != nil {
+		return ctx.Primary().Accept(g)
+	}
+	fmt.Fprintf(os.Stderr, "Error: PrimaryExpr has no primary\n")
+	return g.builder.CreateInt32("", 0)
+}
+
+func (g *IRGenerator) VisitCastExpr(ctx *parser.CastExprContext) interface{} {
+	value := g.safeAcceptExpr(ctx.Expression(), "cast expression")
+	targetType := g.getType(ctx.Type_())
+	return g.builder.CreateCast(value, targetType)
+}
+
+func (g *IRGenerator) VisitDerefExpr(ctx *parser.DerefExprContext) interface{} {
+	ptr := g.safeAcceptExpr(ctx.Expression(), "dereference expression")
+	return g.builder.CreateLoad(ptr)
+}
+
+func (g *IRGenerator) VisitAddrOfExpr(ctx *parser.AddrOfExprContext) interface{} {
+	// For address-of, we need to handle this differently
+	// This is a placeholder - you may need to adjust based on your needs
+	operand := g.safeAcceptExpr(ctx.Expression(), "address-of expression")
+	return operand
+}
+
+func (g *IRGenerator) VisitFieldAccessExpr(ctx *parser.FieldAccessExprContext) interface{} {
+	structPtr := g.safeAcceptExpr(ctx.Expression(), "field access expression")
+	fieldName := ctx.IDENTIFIER().GetText()
+	return g.builder.CreateStructAccess(structPtr, fieldName)
+}
+
+func (g *IRGenerator) VisitVectorLiteralExpr(ctx *parser.VectorLiteralExprContext) interface{} {
+	// Placeholder - implement based on your vector literal structure
+	fmt.Fprintf(os.Stderr, "Warning: Vector literals not yet implemented\n")
+	return g.builder.CreateInt32("", 0)
+}
+
+func (g *IRGenerator) VisitMapLiteralExpr(ctx *parser.MapLiteralExprContext) interface{} {
+	// Placeholder - implement based on your map literal structure
+	fmt.Fprintf(os.Stderr, "Warning: Map literals not yet implemented\n")
+	return g.builder.CreateInt32("", 0)
+}
+
+func (g *IRGenerator) VisitStructLiteralExpr(ctx *parser.StructLiteralExprContext) interface{} {
+	// Placeholder - implement based on your struct literal structure
+	fmt.Fprintf(os.Stderr, "Warning: Struct literals not yet implemented\n")
+	return g.builder.CreateInt32("", 0)
+}
+
+func (g *IRGenerator) VisitAllocaExpr(ctx *parser.AllocaExprContext) interface{} {
+	allocType := g.getType(ctx.Type_())
+	return g.builder.CreateAlloca(allocType)
 }
 
 func (g *IRGenerator) VisitCallExpr(ctx *parser.CallExprContext) interface{} {
@@ -369,13 +453,49 @@ func (g *IRGenerator) VisitCallExpr(ctx *parser.CallExprContext) interface{} {
 	var args []*builder.Value
 	if ctx.ArgumentList() != nil {
 		argList := ctx.ArgumentList().(*parser.ArgumentListContext)
-		for _, exprCtx := range argList.AllExpression() {
-			arg := g.Visit(exprCtx).(*builder.Value)
+		for i, exprCtx := range argList.AllExpression() {
+			arg := g.safeAcceptExpr(exprCtx, fmt.Sprintf("call argument %d", i))
 			args = append(args, arg)
 		}
 	}
 
 	return g.builder.CreateCall(fn, args)
+}
+
+// Helper function to safely get expression value with nil check
+func (g *IRGenerator) safeAcceptExpr(exprCtx parser.IExpressionContext, defaultMsg string) *builder.Value {
+	if exprCtx == nil {
+		fmt.Fprintf(os.Stderr, "Error: %s - expression context is nil\n", defaultMsg)
+		return g.builder.CreateInt32("", 0)
+	}
+	
+	result := exprCtx.Accept(g)
+	if result == nil {
+		fmt.Fprintf(os.Stderr, "Error: %s - expression returned nil (type was %T)\n", defaultMsg, exprCtx)
+		return g.builder.CreateInt32("", 0)
+	}
+	
+	return result.(*builder.Value)
+}
+
+// Helper function to get default value for a type
+func (g *IRGenerator) getDefaultValue(t types.Type) interface{} {
+	switch t {
+	case types.Int8, types.Int16, types.Int32:
+		return g.builder.CreateInt32("", 0)
+	case types.Int64:
+		return g.builder.CreateInt64("", 0)
+	case types.Float32:
+		return g.builder.CreateFloat32("", 0.0)
+	case types.Float64:
+		return g.builder.CreateFloat64("", 0.0)
+	case types.Bool:
+		return g.builder.CreateBool("", false)
+	case types.String:
+		return g.builder.CreateString("", "")
+	default:
+		return g.builder.CreateInt32("", 0)
+	}
 }
 
 // Helper function to convert type contexts to IR types
@@ -449,8 +569,8 @@ func main() {
 	// Generate IR
 	gen := NewIRGenerator()
 	fmt.Println("DEBUG: Starting IR generation...")
-	result := gen.Visit(tree)
-	fmt.Printf("DEBUG: Visit returned: %v\n", result)
+	result := tree.Accept(gen) // Use Accept instead of Visit
+	fmt.Printf("DEBUG: Accept returned: %v\n", result)
 
 	// Get the module
 	module := gen.Module()
