@@ -1,6 +1,8 @@
 
 
-package github.com/arc-language/parser
+// THIS the parser package 
+package "github.com/arc-language/parser"
+
 
 CONSTANTS
 
@@ -8,59 +10,63 @@ const (
 	ArcLexerLET             = 1
 	ArcLexerCONST           = 2
 	ArcLexerFUNC            = 3
-	ArcLexerSTRUCT          = 4
-	ArcLexerRETURN          = 5
-	ArcLexerIF              = 6
-	ArcLexerELSE            = 7
-	ArcLexerALLOCA          = 8
-	ArcLexerCAST            = 9
-	ArcLexerINT32           = 10
-	ArcLexerINT64           = 11
-	ArcLexerFLOAT32         = 12
-	ArcLexerFLOAT64         = 13
-	ArcLexerBOOL            = 14
-	ArcLexerSTRING          = 15
-	ArcLexerBYTE            = 16
-	ArcLexerCHAR            = 17
-	ArcLexerVECTOR          = 18
-	ArcLexerMAP             = 19
-	ArcLexerTRUE            = 20
-	ArcLexerFALSE           = 21
-	ArcLexerPLUS            = 22
-	ArcLexerMINUS           = 23
-	ArcLexerSTAR            = 24
-	ArcLexerSLASH           = 25
-	ArcLexerPERCENT         = 26
-	ArcLexerEQ              = 27
-	ArcLexerNE              = 28
-	ArcLexerLT              = 29
-	ArcLexerLE              = 30
-	ArcLexerGT              = 31
-	ArcLexerGE              = 32
-	ArcLexerAND             = 33
-	ArcLexerOR              = 34
-	ArcLexerNOT             = 35
-	ArcLexerAMP             = 36
-	ArcLexerAT              = 37
-	ArcLexerASSIGN          = 38
-	ArcLexerLPAREN          = 39
-	ArcLexerRPAREN          = 40
-	ArcLexerLBRACE          = 41
-	ArcLexerRBRACE          = 42
-	ArcLexerLBRACK          = 43
-	ArcLexerRBRACK          = 44
-	ArcLexerCOMMA           = 45
-	ArcLexerCOLON           = 46
-	ArcLexerSEMICOLON       = 47
-	ArcLexerDOT             = 48
-	ArcLexerIDENTIFIER      = 49
-	ArcLexerINTEGER_LITERAL = 50
-	ArcLexerFLOAT_LITERAL   = 51
-	ArcLexerSTRING_LITERAL  = 52
-	ArcLexerCHAR_LITERAL    = 53
-	ArcLexerWS              = 54
-	ArcLexerLINE_COMMENT    = 55
-	ArcLexerBLOCK_COMMENT   = 56
+	ArcLexerEXTERN          = 4
+	ArcLexerSTRUCT          = 5
+	ArcLexerRETURN          = 6
+	ArcLexerIF              = 7
+	ArcLexerELSE            = 8
+	ArcLexerALLOCA          = 9
+	ArcLexerCAST            = 10
+	ArcLexerINT32           = 11
+	ArcLexerINT64           = 12
+	ArcLexerFLOAT32         = 13
+	ArcLexerFLOAT64         = 14
+	ArcLexerBOOL            = 15
+	ArcLexerSTRING          = 16
+	ArcLexerBYTE            = 17
+	ArcLexerCHAR            = 18
+	ArcLexerVOID            = 19
+	ArcLexerVECTOR          = 20
+	ArcLexerMAP             = 21
+	ArcLexerTRUE            = 22
+	ArcLexerFALSE           = 23
+	ArcLexerPLUS            = 24
+	ArcLexerMINUS           = 25
+	ArcLexerSTAR            = 26
+	ArcLexerSLASH           = 27
+	ArcLexerPERCENT         = 28
+	ArcLexerEQ              = 29
+	ArcLexerNE              = 30
+	ArcLexerLT              = 31
+	ArcLexerLE              = 32
+	ArcLexerGT              = 33
+	ArcLexerGE              = 34
+	ArcLexerAND             = 35
+	ArcLexerOR              = 36
+	ArcLexerNOT             = 37
+	ArcLexerAMP             = 38
+	ArcLexerAT              = 39
+	ArcLexerASSIGN          = 40
+	ArcLexerARROW           = 41
+	ArcLexerELLIPSIS        = 42
+	ArcLexerLPAREN          = 43
+	ArcLexerRPAREN          = 44
+	ArcLexerLBRACE          = 45
+	ArcLexerRBRACE          = 46
+	ArcLexerLBRACK          = 47
+	ArcLexerRBRACK          = 48
+	ArcLexerCOMMA           = 49
+	ArcLexerCOLON           = 50
+	ArcLexerSEMICOLON       = 51
+	ArcLexerDOT             = 52
+	ArcLexerIDENTIFIER      = 53
+	ArcLexerINTEGER_LITERAL = 54
+	ArcLexerFLOAT_LITERAL   = 55
+	ArcLexerSTRING_LITERAL  = 56
+	ArcLexerCHAR_LITERAL    = 57
+	ArcLexerWS              = 58
+	ArcLexerLINE_COMMENT    = 59
+	ArcLexerBLOCK_COMMENT   = 60
 )
     ArcLexer tokens.
 
@@ -69,87 +75,94 @@ const (
 	ArcParserLET             = 1
 	ArcParserCONST           = 2
 	ArcParserFUNC            = 3
-	ArcParserSTRUCT          = 4
-	ArcParserRETURN          = 5
-	ArcParserIF              = 6
-	ArcParserELSE            = 7
-	ArcParserALLOCA          = 8
-	ArcParserCAST            = 9
-	ArcParserINT32           = 10
-	ArcParserINT64           = 11
-	ArcParserFLOAT32         = 12
-	ArcParserFLOAT64         = 13
-	ArcParserBOOL            = 14
-	ArcParserSTRING          = 15
-	ArcParserBYTE            = 16
-	ArcParserCHAR            = 17
-	ArcParserVECTOR          = 18
-	ArcParserMAP             = 19
-	ArcParserTRUE            = 20
-	ArcParserFALSE           = 21
-	ArcParserPLUS            = 22
-	ArcParserMINUS           = 23
-	ArcParserSTAR            = 24
-	ArcParserSLASH           = 25
-	ArcParserPERCENT         = 26
-	ArcParserEQ              = 27
-	ArcParserNE              = 28
-	ArcParserLT              = 29
-	ArcParserLE              = 30
-	ArcParserGT              = 31
-	ArcParserGE              = 32
-	ArcParserAND             = 33
-	ArcParserOR              = 34
-	ArcParserNOT             = 35
-	ArcParserAMP             = 36
-	ArcParserAT              = 37
-	ArcParserASSIGN          = 38
-	ArcParserLPAREN          = 39
-	ArcParserRPAREN          = 40
-	ArcParserLBRACE          = 41
-	ArcParserRBRACE          = 42
-	ArcParserLBRACK          = 43
-	ArcParserRBRACK          = 44
-	ArcParserCOMMA           = 45
-	ArcParserCOLON           = 46
-	ArcParserSEMICOLON       = 47
-	ArcParserDOT             = 48
-	ArcParserIDENTIFIER      = 49
-	ArcParserINTEGER_LITERAL = 50
-	ArcParserFLOAT_LITERAL   = 51
-	ArcParserSTRING_LITERAL  = 52
-	ArcParserCHAR_LITERAL    = 53
-	ArcParserWS              = 54
-	ArcParserLINE_COMMENT    = 55
-	ArcParserBLOCK_COMMENT   = 56
+	ArcParserEXTERN          = 4
+	ArcParserSTRUCT          = 5
+	ArcParserRETURN          = 6
+	ArcParserIF              = 7
+	ArcParserELSE            = 8
+	ArcParserALLOCA          = 9
+	ArcParserCAST            = 10
+	ArcParserINT32           = 11
+	ArcParserINT64           = 12
+	ArcParserFLOAT32         = 13
+	ArcParserFLOAT64         = 14
+	ArcParserBOOL            = 15
+	ArcParserSTRING          = 16
+	ArcParserBYTE            = 17
+	ArcParserCHAR            = 18
+	ArcParserVOID            = 19
+	ArcParserVECTOR          = 20
+	ArcParserMAP             = 21
+	ArcParserTRUE            = 22
+	ArcParserFALSE           = 23
+	ArcParserPLUS            = 24
+	ArcParserMINUS           = 25
+	ArcParserSTAR            = 26
+	ArcParserSLASH           = 27
+	ArcParserPERCENT         = 28
+	ArcParserEQ              = 29
+	ArcParserNE              = 30
+	ArcParserLT              = 31
+	ArcParserLE              = 32
+	ArcParserGT              = 33
+	ArcParserGE              = 34
+	ArcParserAND             = 35
+	ArcParserOR              = 36
+	ArcParserNOT             = 37
+	ArcParserAMP             = 38
+	ArcParserAT              = 39
+	ArcParserASSIGN          = 40
+	ArcParserARROW           = 41
+	ArcParserELLIPSIS        = 42
+	ArcParserLPAREN          = 43
+	ArcParserRPAREN          = 44
+	ArcParserLBRACE          = 45
+	ArcParserRBRACE          = 46
+	ArcParserLBRACK          = 47
+	ArcParserRBRACK          = 48
+	ArcParserCOMMA           = 49
+	ArcParserCOLON           = 50
+	ArcParserSEMICOLON       = 51
+	ArcParserDOT             = 52
+	ArcParserIDENTIFIER      = 53
+	ArcParserINTEGER_LITERAL = 54
+	ArcParserFLOAT_LITERAL   = 55
+	ArcParserSTRING_LITERAL  = 56
+	ArcParserCHAR_LITERAL    = 57
+	ArcParserWS              = 58
+	ArcParserLINE_COMMENT    = 59
+	ArcParserBLOCK_COMMENT   = 60
 )
     ArcParser tokens.
 
 const (
-	ArcParserRULE_program         = 0
-	ArcParserRULE_declaration     = 1
-	ArcParserRULE_variableDecl    = 2
-	ArcParserRULE_functionDecl    = 3
-	ArcParserRULE_parameterList   = 4
-	ArcParserRULE_parameter       = 5
-	ArcParserRULE_returnType      = 6
-	ArcParserRULE_structDecl      = 7
-	ArcParserRULE_structFieldList = 8
-	ArcParserRULE_structField     = 9
-	ArcParserRULE_block           = 10
-	ArcParserRULE_statement       = 11
-	ArcParserRULE_ifStatement     = 12
-	ArcParserRULE_type            = 13
-	ArcParserRULE_primitiveType   = 14
-	ArcParserRULE_expression      = 15
-	ArcParserRULE_primary         = 16
-	ArcParserRULE_structLiteral   = 17
-	ArcParserRULE_fieldInitList   = 18
-	ArcParserRULE_fieldInit       = 19
-	ArcParserRULE_vectorLiteral   = 20
-	ArcParserRULE_mapLiteral      = 21
-	ArcParserRULE_mapEntry        = 22
-	ArcParserRULE_argumentList    = 23
+	ArcParserRULE_program             = 0
+	ArcParserRULE_declaration         = 1
+	ArcParserRULE_variableDecl        = 2
+	ArcParserRULE_functionDecl        = 3
+	ArcParserRULE_externDecl          = 4
+	ArcParserRULE_externFunctionDecl  = 5
+	ArcParserRULE_parameterList       = 6
+	ArcParserRULE_externParameterList = 7
+	ArcParserRULE_parameter           = 8
+	ArcParserRULE_returnType          = 9
+	ArcParserRULE_structDecl          = 10
+	ArcParserRULE_structFieldList     = 11
+	ArcParserRULE_structField         = 12
+	ArcParserRULE_block               = 13
+	ArcParserRULE_statement           = 14
+	ArcParserRULE_ifStatement         = 15
+	ArcParserRULE_type                = 16
+	ArcParserRULE_primitiveType       = 17
+	ArcParserRULE_expression          = 18
+	ArcParserRULE_primary             = 19
+	ArcParserRULE_structLiteral       = 20
+	ArcParserRULE_fieldInitList       = 21
+	ArcParserRULE_fieldInit           = 22
+	ArcParserRULE_vectorLiteral       = 23
+	ArcParserRULE_mapLiteral          = 24
+	ArcParserRULE_mapEntry            = 25
+	ArcParserRULE_argumentList        = 26
 )
     ArcParser rules.
 
@@ -197,6 +210,9 @@ func InitEmptyArgumentListContext(p *ArgumentListContext)
 func InitEmptyBlockContext(p *BlockContext)
 func InitEmptyDeclarationContext(p *DeclarationContext)
 func InitEmptyExpressionContext(p *ExpressionContext)
+func InitEmptyExternDeclContext(p *ExternDeclContext)
+func InitEmptyExternFunctionDeclContext(p *ExternFunctionDeclContext)
+func InitEmptyExternParameterListContext(p *ExternParameterListContext)
 func InitEmptyFieldInitContext(p *FieldInitContext)
 func InitEmptyFieldInitListContext(p *FieldInitListContext)
 func InitEmptyFunctionDeclContext(p *FunctionDeclContext)
@@ -315,6 +331,12 @@ func (p *ArcParser) Expression() (localctx IExpressionContext)
 
 func (p *ArcParser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool
 
+func (p *ArcParser) ExternDecl() (localctx IExternDeclContext)
+
+func (p *ArcParser) ExternFunctionDecl() (localctx IExternFunctionDeclContext)
+
+func (p *ArcParser) ExternParameterList() (localctx IExternParameterListContext)
+
 func (p *ArcParser) FieldInit() (localctx IFieldInitContext)
 
 func (p *ArcParser) FieldInitList() (localctx IFieldInitListContext)
@@ -372,8 +394,17 @@ type ArcParserListener interface {
 	// EnterFunctionDecl is called when entering the functionDecl production.
 	EnterFunctionDecl(c *FunctionDeclContext)
 
+	// EnterExternDecl is called when entering the externDecl production.
+	EnterExternDecl(c *ExternDeclContext)
+
+	// EnterExternFunctionDecl is called when entering the externFunctionDecl production.
+	EnterExternFunctionDecl(c *ExternFunctionDeclContext)
+
 	// EnterParameterList is called when entering the parameterList production.
 	EnterParameterList(c *ParameterListContext)
+
+	// EnterExternParameterList is called when entering the externParameterList production.
+	EnterExternParameterList(c *ExternParameterListContext)
 
 	// EnterParameter is called when entering the parameter production.
 	EnterParameter(c *ParameterContext)
@@ -543,8 +574,17 @@ type ArcParserListener interface {
 	// ExitFunctionDecl is called when exiting the functionDecl production.
 	ExitFunctionDecl(c *FunctionDeclContext)
 
+	// ExitExternDecl is called when exiting the externDecl production.
+	ExitExternDecl(c *ExternDeclContext)
+
+	// ExitExternFunctionDecl is called when exiting the externFunctionDecl production.
+	ExitExternFunctionDecl(c *ExternFunctionDeclContext)
+
 	// ExitParameterList is called when exiting the parameterList production.
 	ExitParameterList(c *ParameterListContext)
+
+	// ExitExternParameterList is called when exiting the externParameterList production.
+	ExitExternParameterList(c *ExternParameterListContext)
 
 	// ExitParameter is called when exiting the parameter production.
 	ExitParameter(c *ParameterContext)
@@ -720,8 +760,17 @@ type ArcParserVisitor interface {
 	// Visit a parse tree produced by ArcParser#functionDecl.
 	VisitFunctionDecl(ctx *FunctionDeclContext) interface{}
 
+	// Visit a parse tree produced by ArcParser#externDecl.
+	VisitExternDecl(ctx *ExternDeclContext) interface{}
+
+	// Visit a parse tree produced by ArcParser#externFunctionDecl.
+	VisitExternFunctionDecl(ctx *ExternFunctionDeclContext) interface{}
+
 	// Visit a parse tree produced by ArcParser#parameterList.
 	VisitParameterList(ctx *ParameterListContext) interface{}
+
+	// Visit a parse tree produced by ArcParser#externParameterList.
+	VisitExternParameterList(ctx *ExternParameterListContext) interface{}
 
 	// Visit a parse tree produced by ArcParser#parameter.
 	VisitParameter(ctx *ParameterContext) interface{}
@@ -984,6 +1033,17 @@ func (s *BaseArcParserListener) EnterEveryRule(ctx antlr.ParserRuleContext)
 func (s *BaseArcParserListener) EnterExprStmt(ctx *ExprStmtContext)
     EnterExprStmt is called when production ExprStmt is entered.
 
+func (s *BaseArcParserListener) EnterExternDecl(ctx *ExternDeclContext)
+    EnterExternDecl is called when production externDecl is entered.
+
+func (s *BaseArcParserListener) EnterExternFunctionDecl(ctx *ExternFunctionDeclContext)
+    EnterExternFunctionDecl is called when production externFunctionDecl is
+    entered.
+
+func (s *BaseArcParserListener) EnterExternParameterList(ctx *ExternParameterListContext)
+    EnterExternParameterList is called when production externParameterList is
+    entered.
+
 func (s *BaseArcParserListener) EnterFieldAccessExpr(ctx *FieldAccessExprContext)
     EnterFieldAccessExpr is called when production FieldAccessExpr is entered.
 
@@ -1161,6 +1221,17 @@ func (s *BaseArcParserListener) ExitEveryRule(ctx antlr.ParserRuleContext)
 func (s *BaseArcParserListener) ExitExprStmt(ctx *ExprStmtContext)
     ExitExprStmt is called when production ExprStmt is exited.
 
+func (s *BaseArcParserListener) ExitExternDecl(ctx *ExternDeclContext)
+    ExitExternDecl is called when production externDecl is exited.
+
+func (s *BaseArcParserListener) ExitExternFunctionDecl(ctx *ExternFunctionDeclContext)
+    ExitExternFunctionDecl is called when production externFunctionDecl is
+    exited.
+
+func (s *BaseArcParserListener) ExitExternParameterList(ctx *ExternParameterListContext)
+    ExitExternParameterList is called when production externParameterList is
+    exited.
+
 func (s *BaseArcParserListener) ExitFieldAccessExpr(ctx *FieldAccessExprContext)
     ExitFieldAccessExpr is called when production FieldAccessExpr is exited.
 
@@ -1327,6 +1398,12 @@ func (v *BaseArcParserVisitor) VisitEqualityExpr(ctx *EqualityExprContext) inter
 
 func (v *BaseArcParserVisitor) VisitExprStmt(ctx *ExprStmtContext) interface{}
 
+func (v *BaseArcParserVisitor) VisitExternDecl(ctx *ExternDeclContext) interface{}
+
+func (v *BaseArcParserVisitor) VisitExternFunctionDecl(ctx *ExternFunctionDeclContext) interface{}
+
+func (v *BaseArcParserVisitor) VisitExternParameterList(ctx *ExternParameterListContext) interface{}
+
 func (v *BaseArcParserVisitor) VisitFieldAccessExpr(ctx *FieldAccessExprContext) interface{}
 
 func (v *BaseArcParserVisitor) VisitFieldInit(ctx *FieldInitContext) interface{}
@@ -1474,9 +1551,9 @@ func (s *CallExprContext) EnterRule(listener antlr.ParseTreeListener)
 
 func (s *CallExprContext) ExitRule(listener antlr.ParseTreeListener)
 
-func (s *CallExprContext) GetRuleContext() antlr.RuleContext
+func (s *CallExprContext) Expression() IExpressionContext
 
-func (s *CallExprContext) IDENTIFIER() antlr.TerminalNode
+func (s *CallExprContext) GetRuleContext() antlr.RuleContext
 
 func (s *CallExprContext) LPAREN() antlr.TerminalNode
 
@@ -1572,6 +1649,8 @@ func (s *DeclarationContext) EnterRule(listener antlr.ParseTreeListener)
 
 func (s *DeclarationContext) ExitRule(listener antlr.ParseTreeListener)
 
+func (s *DeclarationContext) ExternDecl() IExternDeclContext
+
 func (s *DeclarationContext) FunctionDecl() IFunctionDeclContext
 
 func (s *DeclarationContext) GetParser() antlr.Parser
@@ -1665,6 +1744,111 @@ func (s *ExpressionContext) GetRuleContext() antlr.RuleContext
 func (*ExpressionContext) IsExpressionContext()
 
 func (s *ExpressionContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string
+
+type ExternDeclContext struct {
+	antlr.BaseParserRuleContext
+	// Has unexported fields.
+}
+
+func NewEmptyExternDeclContext() *ExternDeclContext
+
+func NewExternDeclContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExternDeclContext
+
+func (s *ExternDeclContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
+
+func (s *ExternDeclContext) AllExternFunctionDecl() []IExternFunctionDeclContext
+
+func (s *ExternDeclContext) EXTERN() antlr.TerminalNode
+
+func (s *ExternDeclContext) EnterRule(listener antlr.ParseTreeListener)
+
+func (s *ExternDeclContext) ExitRule(listener antlr.ParseTreeListener)
+
+func (s *ExternDeclContext) ExternFunctionDecl(i int) IExternFunctionDeclContext
+
+func (s *ExternDeclContext) GetParser() antlr.Parser
+
+func (s *ExternDeclContext) GetRuleContext() antlr.RuleContext
+
+func (s *ExternDeclContext) IDENTIFIER() antlr.TerminalNode
+
+func (*ExternDeclContext) IsExternDeclContext()
+
+func (s *ExternDeclContext) LBRACE() antlr.TerminalNode
+
+func (s *ExternDeclContext) RBRACE() antlr.TerminalNode
+
+func (s *ExternDeclContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string
+
+type ExternFunctionDeclContext struct {
+	antlr.BaseParserRuleContext
+	// Has unexported fields.
+}
+
+func NewEmptyExternFunctionDeclContext() *ExternFunctionDeclContext
+
+func NewExternFunctionDeclContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExternFunctionDeclContext
+
+func (s *ExternFunctionDeclContext) ARROW() antlr.TerminalNode
+
+func (s *ExternFunctionDeclContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
+
+func (s *ExternFunctionDeclContext) EnterRule(listener antlr.ParseTreeListener)
+
+func (s *ExternFunctionDeclContext) ExitRule(listener antlr.ParseTreeListener)
+
+func (s *ExternFunctionDeclContext) ExternParameterList() IExternParameterListContext
+
+func (s *ExternFunctionDeclContext) FUNC() antlr.TerminalNode
+
+func (s *ExternFunctionDeclContext) GetParser() antlr.Parser
+
+func (s *ExternFunctionDeclContext) GetRuleContext() antlr.RuleContext
+
+func (s *ExternFunctionDeclContext) IDENTIFIER() antlr.TerminalNode
+
+func (*ExternFunctionDeclContext) IsExternFunctionDeclContext()
+
+func (s *ExternFunctionDeclContext) LPAREN() antlr.TerminalNode
+
+func (s *ExternFunctionDeclContext) RPAREN() antlr.TerminalNode
+
+func (s *ExternFunctionDeclContext) ReturnType() IReturnTypeContext
+
+func (s *ExternFunctionDeclContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string
+
+type ExternParameterListContext struct {
+	antlr.BaseParserRuleContext
+	// Has unexported fields.
+}
+
+func NewEmptyExternParameterListContext() *ExternParameterListContext
+
+func NewExternParameterListContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExternParameterListContext
+
+func (s *ExternParameterListContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
+
+func (s *ExternParameterListContext) AllCOMMA() []antlr.TerminalNode
+
+func (s *ExternParameterListContext) AllParameter() []IParameterContext
+
+func (s *ExternParameterListContext) COMMA(i int) antlr.TerminalNode
+
+func (s *ExternParameterListContext) ELLIPSIS() antlr.TerminalNode
+
+func (s *ExternParameterListContext) EnterRule(listener antlr.ParseTreeListener)
+
+func (s *ExternParameterListContext) ExitRule(listener antlr.ParseTreeListener)
+
+func (s *ExternParameterListContext) GetParser() antlr.Parser
+
+func (s *ExternParameterListContext) GetRuleContext() antlr.RuleContext
+
+func (*ExternParameterListContext) IsExternParameterListContext()
+
+func (s *ExternParameterListContext) Parameter(i int) IParameterContext
+
+func (s *ExternParameterListContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string
 
 type FieldAccessExprContext struct {
 	ExpressionContext
@@ -1771,6 +1955,8 @@ func NewEmptyFunctionDeclContext() *FunctionDeclContext
 
 func NewFunctionDeclContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *FunctionDeclContext
 
+func (s *FunctionDeclContext) ARROW() antlr.TerminalNode
+
 func (s *FunctionDeclContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 
 func (s *FunctionDeclContext) Block() IBlockContext
@@ -1841,6 +2027,7 @@ type IDeclarationContext interface {
 
 	// Getter signatures
 	FunctionDecl() IFunctionDeclContext
+	ExternDecl() IExternDeclContext
 	StructDecl() IStructDeclContext
 	VariableDecl() IVariableDeclContext
 
@@ -1858,6 +2045,63 @@ type IExpressionContext interface {
 	IsExpressionContext()
 }
     IExpressionContext is an interface to support dynamic dispatch.
+
+type IExternDeclContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	EXTERN() antlr.TerminalNode
+	IDENTIFIER() antlr.TerminalNode
+	LBRACE() antlr.TerminalNode
+	RBRACE() antlr.TerminalNode
+	AllExternFunctionDecl() []IExternFunctionDeclContext
+	ExternFunctionDecl(i int) IExternFunctionDeclContext
+
+	// IsExternDeclContext differentiates from other interfaces.
+	IsExternDeclContext()
+}
+    IExternDeclContext is an interface to support dynamic dispatch.
+
+type IExternFunctionDeclContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	FUNC() antlr.TerminalNode
+	IDENTIFIER() antlr.TerminalNode
+	LPAREN() antlr.TerminalNode
+	RPAREN() antlr.TerminalNode
+	ExternParameterList() IExternParameterListContext
+	ReturnType() IReturnTypeContext
+	ARROW() antlr.TerminalNode
+
+	// IsExternFunctionDeclContext differentiates from other interfaces.
+	IsExternFunctionDeclContext()
+}
+    IExternFunctionDeclContext is an interface to support dynamic dispatch.
+
+type IExternParameterListContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	AllParameter() []IParameterContext
+	Parameter(i int) IParameterContext
+	AllCOMMA() []antlr.TerminalNode
+	COMMA(i int) antlr.TerminalNode
+	ELLIPSIS() antlr.TerminalNode
+
+	// IsExternParameterListContext differentiates from other interfaces.
+	IsExternParameterListContext()
+}
+    IExternParameterListContext is an interface to support dynamic dispatch.
 
 type IFieldInitContext interface {
 	antlr.ParserRuleContext
@@ -1906,6 +2150,7 @@ type IFunctionDeclContext interface {
 	Block() IBlockContext
 	ParameterList() IParameterListContext
 	ReturnType() IReturnTypeContext
+	ARROW() antlr.TerminalNode
 
 	// IsFunctionDeclContext differentiates from other interfaces.
 	IsFunctionDeclContext()
@@ -2023,6 +2268,7 @@ type IPrimitiveTypeContext interface {
 	STRING() antlr.TerminalNode
 	BYTE() antlr.TerminalNode
 	CHAR() antlr.TerminalNode
+	VOID() antlr.TerminalNode
 
 	// IsPrimitiveTypeContext differentiates from other interfaces.
 	IsPrimitiveTypeContext()
@@ -2629,6 +2875,8 @@ func (*PrimitiveTypeContext) IsPrimitiveTypeContext()
 func (s *PrimitiveTypeContext) STRING() antlr.TerminalNode
 
 func (s *PrimitiveTypeContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string
+
+func (s *PrimitiveTypeContext) VOID() antlr.TerminalNode
 
 type PrimitiveTypeSpecContext struct {
 	TypeContext

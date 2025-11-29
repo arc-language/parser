@@ -12,6 +12,7 @@ program
 // Top-level declarations
 declaration
     : functionDecl
+    | externDecl        // Added
     | structDecl
     | variableDecl
     ;
@@ -23,12 +24,28 @@ variableDecl
     ;
 
 // Function declaration
+// Added optional ARROW ('->') to support 'func name() -> int' style if desired
 functionDecl
-    : FUNC IDENTIFIER LPAREN parameterList? RPAREN returnType? block
+    : FUNC IDENTIFIER LPAREN parameterList? RPAREN (ARROW? returnType)? block
+    ;
+
+// Extern declarations (Added)
+externDecl
+    : EXTERN IDENTIFIER LBRACE externFunctionDecl* RBRACE
+    ;
+
+externFunctionDecl
+    : FUNC IDENTIFIER LPAREN externParameterList? RPAREN (ARROW? returnType)?
     ;
 
 parameterList
     : parameter (COMMA parameter)*
+    ;
+
+// Externs support variadic arguments (...)
+externParameterList
+    : parameter (COMMA parameter)* (COMMA ELLIPSIS)?
+    | ELLIPSIS
     ;
 
 parameter
@@ -90,6 +107,7 @@ primitiveType
     | STRING
     | BYTE
     | CHAR
+    | VOID  // Added
     ;
 
 // Expressions (with precedence)
@@ -99,8 +117,6 @@ expression
     | AMP expression                                        # AddrOfExpr
     | MINUS expression                                      # UnaryMinusExpr
     | NOT expression                                        # LogicalNotExpr
-    | expression DOT IDENTIFIER                             # FieldAccessExpr
-    | IDENTIFIER LPAREN argumentList? RPAREN                # CallExpr
     | ALLOCA LPAREN type RPAREN                             # AllocaExpr
     | CAST LT type GT LPAREN expression RPAREN              # CastExpr
     | expression op=(STAR | SLASH | PERCENT) expression     # MulDivModExpr
@@ -109,6 +125,9 @@ expression
     | expression op=(EQ | NE) expression                    # EqualityExpr
     | expression AND expression                             # LogicalAndExpr
     | expression OR expression                              # LogicalOrExpr
+    // Moved CallExpr here and changed to 'expression' to support io.printf(...)
+    | expression LPAREN argumentList? RPAREN                # CallExpr 
+    | expression DOT IDENTIFIER                             # FieldAccessExpr
     ;
 
 primary

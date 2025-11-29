@@ -24,7 +24,19 @@ func (v *BaseArcParserVisitor) VisitFunctionDecl(ctx *FunctionDeclContext) inter
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseArcParserVisitor) VisitExternDecl(ctx *ExternDeclContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseArcParserVisitor) VisitExternFunctionDecl(ctx *ExternFunctionDeclContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseArcParserVisitor) VisitParameterList(ctx *ParameterListContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseArcParserVisitor) VisitExternParameterList(ctx *ExternParameterListContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

@@ -4,6 +4,7 @@ lexer grammar ArcLexer;
 LET: 'let';
 CONST: 'const';
 FUNC: 'func';
+EXTERN: 'extern'; // Added
 STRUCT: 'struct';
 RETURN: 'return';
 IF: 'if';
@@ -20,6 +21,7 @@ BOOL: 'bool';
 STRING: 'string';
 BYTE: 'byte';
 CHAR: 'char';
+VOID: 'void'; // Added for C interop
 
 // Collection Types
 VECTOR: 'vector';
@@ -51,6 +53,8 @@ AMP: '&';
 AT: '@';
 
 ASSIGN: '=';
+ARROW: '->'; // Added
+ELLIPSIS: '...'; // Added for variadic functions
 
 // Delimiters
 LPAREN: '(';

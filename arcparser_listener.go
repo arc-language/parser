@@ -20,8 +20,17 @@ type ArcParserListener interface {
 	// EnterFunctionDecl is called when entering the functionDecl production.
 	EnterFunctionDecl(c *FunctionDeclContext)
 
+	// EnterExternDecl is called when entering the externDecl production.
+	EnterExternDecl(c *ExternDeclContext)
+
+	// EnterExternFunctionDecl is called when entering the externFunctionDecl production.
+	EnterExternFunctionDecl(c *ExternFunctionDeclContext)
+
 	// EnterParameterList is called when entering the parameterList production.
 	EnterParameterList(c *ParameterListContext)
+
+	// EnterExternParameterList is called when entering the externParameterList production.
+	EnterExternParameterList(c *ExternParameterListContext)
 
 	// EnterParameter is called when entering the parameter production.
 	EnterParameter(c *ParameterContext)
@@ -191,8 +200,17 @@ type ArcParserListener interface {
 	// ExitFunctionDecl is called when exiting the functionDecl production.
 	ExitFunctionDecl(c *FunctionDeclContext)
 
+	// ExitExternDecl is called when exiting the externDecl production.
+	ExitExternDecl(c *ExternDeclContext)
+
+	// ExitExternFunctionDecl is called when exiting the externFunctionDecl production.
+	ExitExternFunctionDecl(c *ExternFunctionDeclContext)
+
 	// ExitParameterList is called when exiting the parameterList production.
 	ExitParameterList(c *ParameterListContext)
+
+	// ExitExternParameterList is called when exiting the externParameterList production.
+	ExitExternParameterList(c *ExternParameterListContext)
 
 	// ExitParameter is called when exiting the parameter production.
 	ExitParameter(c *ParameterContext)
