@@ -1,7 +1,6 @@
 
-
-THIS is the parser package 
-package "github.com/arc-language/parser"
+This is the paser package
+package github.com/arc-language/parser
 
 CONSTANTS
 
@@ -167,47 +166,48 @@ const (
 	ArcParserRULE_externDecl               = 5
 	ArcParserRULE_externMember             = 6
 	ArcParserRULE_externFunctionDecl       = 7
-	ArcParserRULE_functionDecl             = 8
-	ArcParserRULE_parameterList            = 9
-	ArcParserRULE_parameter                = 10
-	ArcParserRULE_structDecl               = 11
-	ArcParserRULE_structField              = 12
-	ArcParserRULE_variableDecl             = 13
-	ArcParserRULE_constDecl                = 14
-	ArcParserRULE_type                     = 15
-	ArcParserRULE_primitiveType            = 16
-	ArcParserRULE_pointerType              = 17
-	ArcParserRULE_referenceType            = 18
-	ArcParserRULE_vectorType               = 19
-	ArcParserRULE_mapType                  = 20
-	ArcParserRULE_block                    = 21
-	ArcParserRULE_statement                = 22
-	ArcParserRULE_assignmentStmt           = 23
-	ArcParserRULE_leftHandSide             = 24
-	ArcParserRULE_expressionStmt           = 25
-	ArcParserRULE_returnStmt               = 26
-	ArcParserRULE_ifStmt                   = 27
-	ArcParserRULE_deferStmt                = 28
-	ArcParserRULE_expression               = 29
-	ArcParserRULE_logicalOrExpression      = 30
-	ArcParserRULE_logicalAndExpression     = 31
-	ArcParserRULE_equalityExpression       = 32
-	ArcParserRULE_relationalExpression     = 33
-	ArcParserRULE_additiveExpression       = 34
-	ArcParserRULE_multiplicativeExpression = 35
-	ArcParserRULE_unaryExpression          = 36
-	ArcParserRULE_postfixExpression        = 37
-	ArcParserRULE_postfixOp                = 38
-	ArcParserRULE_primaryExpression        = 39
-	ArcParserRULE_literal                  = 40
-	ArcParserRULE_vectorLiteral            = 41
-	ArcParserRULE_mapLiteral               = 42
-	ArcParserRULE_mapEntry                 = 43
-	ArcParserRULE_structLiteral            = 44
-	ArcParserRULE_fieldInit                = 45
-	ArcParserRULE_argumentList             = 46
-	ArcParserRULE_castExpression           = 47
-	ArcParserRULE_allocaExpression         = 48
+	ArcParserRULE_externParameterList      = 8
+	ArcParserRULE_functionDecl             = 9
+	ArcParserRULE_parameterList            = 10
+	ArcParserRULE_parameter                = 11
+	ArcParserRULE_structDecl               = 12
+	ArcParserRULE_structField              = 13
+	ArcParserRULE_variableDecl             = 14
+	ArcParserRULE_constDecl                = 15
+	ArcParserRULE_type                     = 16
+	ArcParserRULE_primitiveType            = 17
+	ArcParserRULE_pointerType              = 18
+	ArcParserRULE_referenceType            = 19
+	ArcParserRULE_vectorType               = 20
+	ArcParserRULE_mapType                  = 21
+	ArcParserRULE_block                    = 22
+	ArcParserRULE_statement                = 23
+	ArcParserRULE_assignmentStmt           = 24
+	ArcParserRULE_leftHandSide             = 25
+	ArcParserRULE_expressionStmt           = 26
+	ArcParserRULE_returnStmt               = 27
+	ArcParserRULE_ifStmt                   = 28
+	ArcParserRULE_deferStmt                = 29
+	ArcParserRULE_expression               = 30
+	ArcParserRULE_logicalOrExpression      = 31
+	ArcParserRULE_logicalAndExpression     = 32
+	ArcParserRULE_equalityExpression       = 33
+	ArcParserRULE_relationalExpression     = 34
+	ArcParserRULE_additiveExpression       = 35
+	ArcParserRULE_multiplicativeExpression = 36
+	ArcParserRULE_unaryExpression          = 37
+	ArcParserRULE_postfixExpression        = 38
+	ArcParserRULE_postfixOp                = 39
+	ArcParserRULE_primaryExpression        = 40
+	ArcParserRULE_literal                  = 41
+	ArcParserRULE_vectorLiteral            = 42
+	ArcParserRULE_mapLiteral               = 43
+	ArcParserRULE_mapEntry                 = 44
+	ArcParserRULE_structLiteral            = 45
+	ArcParserRULE_fieldInit                = 46
+	ArcParserRULE_argumentList             = 47
+	ArcParserRULE_castExpression           = 48
+	ArcParserRULE_allocaExpression         = 49
 )
     ArcParser rules.
 
@@ -266,6 +266,7 @@ func InitEmptyExpressionStmtContext(p *ExpressionStmtContext)
 func InitEmptyExternDeclContext(p *ExternDeclContext)
 func InitEmptyExternFunctionDeclContext(p *ExternFunctionDeclContext)
 func InitEmptyExternMemberContext(p *ExternMemberContext)
+func InitEmptyExternParameterListContext(p *ExternParameterListContext)
 func InitEmptyFieldInitContext(p *FieldInitContext)
 func InitEmptyFunctionDeclContext(p *FunctionDeclContext)
 func InitEmptyIfStmtContext(p *IfStmtContext)
@@ -421,6 +422,8 @@ func (p *ArcParser) ExternFunctionDecl() (localctx IExternFunctionDeclContext)
 
 func (p *ArcParser) ExternMember() (localctx IExternMemberContext)
 
+func (p *ArcParser) ExternParameterList() (localctx IExternParameterListContext)
+
 func (p *ArcParser) FieldInit() (localctx IFieldInitContext)
 
 func (p *ArcParser) FunctionDecl() (localctx IFunctionDeclContext)
@@ -515,6 +518,9 @@ type ArcParserListener interface {
 
 	// EnterExternFunctionDecl is called when entering the externFunctionDecl production.
 	EnterExternFunctionDecl(c *ExternFunctionDeclContext)
+
+	// EnterExternParameterList is called when entering the externParameterList production.
+	EnterExternParameterList(c *ExternParameterListContext)
 
 	// EnterFunctionDecl is called when entering the functionDecl production.
 	EnterFunctionDecl(c *FunctionDeclContext)
@@ -662,6 +668,9 @@ type ArcParserListener interface {
 
 	// ExitExternFunctionDecl is called when exiting the externFunctionDecl production.
 	ExitExternFunctionDecl(c *ExternFunctionDeclContext)
+
+	// ExitExternParameterList is called when exiting the externParameterList production.
+	ExitExternParameterList(c *ExternParameterListContext)
 
 	// ExitFunctionDecl is called when exiting the functionDecl production.
 	ExitFunctionDecl(c *FunctionDeclContext)
@@ -815,6 +824,9 @@ type ArcParserVisitor interface {
 
 	// Visit a parse tree produced by ArcParser#externFunctionDecl.
 	VisitExternFunctionDecl(ctx *ExternFunctionDeclContext) interface{}
+
+	// Visit a parse tree produced by ArcParser#externParameterList.
+	VisitExternParameterList(ctx *ExternParameterListContext) interface{}
 
 	// Visit a parse tree produced by ArcParser#functionDecl.
 	VisitFunctionDecl(ctx *FunctionDeclContext) interface{}
@@ -1056,6 +1068,10 @@ func (s *BaseArcParserListener) EnterExternFunctionDecl(ctx *ExternFunctionDeclC
 func (s *BaseArcParserListener) EnterExternMember(ctx *ExternMemberContext)
     EnterExternMember is called when production externMember is entered.
 
+func (s *BaseArcParserListener) EnterExternParameterList(ctx *ExternParameterListContext)
+    EnterExternParameterList is called when production externParameterList is
+    entered.
+
 func (s *BaseArcParserListener) EnterFieldInit(ctx *FieldInitContext)
     EnterFieldInit is called when production fieldInit is entered.
 
@@ -1215,6 +1231,10 @@ func (s *BaseArcParserListener) ExitExternFunctionDecl(ctx *ExternFunctionDeclCo
 func (s *BaseArcParserListener) ExitExternMember(ctx *ExternMemberContext)
     ExitExternMember is called when production externMember is exited.
 
+func (s *BaseArcParserListener) ExitExternParameterList(ctx *ExternParameterListContext)
+    ExitExternParameterList is called when production externParameterList is
+    exited.
+
 func (s *BaseArcParserListener) ExitFieldInit(ctx *FieldInitContext)
     ExitFieldInit is called when production fieldInit is exited.
 
@@ -1360,6 +1380,8 @@ func (v *BaseArcParserVisitor) VisitExternDecl(ctx *ExternDeclContext) interface
 func (v *BaseArcParserVisitor) VisitExternFunctionDecl(ctx *ExternFunctionDeclContext) interface{}
 
 func (v *BaseArcParserVisitor) VisitExternMember(ctx *ExternMemberContext) interface{}
+
+func (v *BaseArcParserVisitor) VisitExternParameterList(ctx *ExternParameterListContext) interface{}
 
 func (v *BaseArcParserVisitor) VisitFieldInit(ctx *FieldInitContext) interface{}
 
@@ -1727,13 +1749,13 @@ func NewEmptyExternFunctionDeclContext() *ExternFunctionDeclContext
 
 func NewExternFunctionDeclContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExternFunctionDeclContext
 
-func (s *ExternFunctionDeclContext) ARROW() antlr.TerminalNode
-
 func (s *ExternFunctionDeclContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 
 func (s *ExternFunctionDeclContext) EnterRule(listener antlr.ParseTreeListener)
 
 func (s *ExternFunctionDeclContext) ExitRule(listener antlr.ParseTreeListener)
+
+func (s *ExternFunctionDeclContext) ExternParameterList() IExternParameterListContext
 
 func (s *ExternFunctionDeclContext) FUNC() antlr.TerminalNode
 
@@ -1746,8 +1768,6 @@ func (s *ExternFunctionDeclContext) IDENTIFIER() antlr.TerminalNode
 func (*ExternFunctionDeclContext) IsExternFunctionDeclContext()
 
 func (s *ExternFunctionDeclContext) LPAREN() antlr.TerminalNode
-
-func (s *ExternFunctionDeclContext) ParameterList() IParameterListContext
 
 func (s *ExternFunctionDeclContext) RPAREN() antlr.TerminalNode
 
@@ -1781,6 +1801,39 @@ func (s *ExternMemberContext) GetRuleContext() antlr.RuleContext
 func (*ExternMemberContext) IsExternMemberContext()
 
 func (s *ExternMemberContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string
+
+type ExternParameterListContext struct {
+	antlr.BaseParserRuleContext
+	// Has unexported fields.
+}
+
+func NewEmptyExternParameterListContext() *ExternParameterListContext
+
+func NewExternParameterListContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExternParameterListContext
+
+func (s *ExternParameterListContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
+
+func (s *ExternParameterListContext) AllCOMMA() []antlr.TerminalNode
+
+func (s *ExternParameterListContext) AllType_() []ITypeContext
+
+func (s *ExternParameterListContext) COMMA(i int) antlr.TerminalNode
+
+func (s *ExternParameterListContext) ELLIPSIS() antlr.TerminalNode
+
+func (s *ExternParameterListContext) EnterRule(listener antlr.ParseTreeListener)
+
+func (s *ExternParameterListContext) ExitRule(listener antlr.ParseTreeListener)
+
+func (s *ExternParameterListContext) GetParser() antlr.Parser
+
+func (s *ExternParameterListContext) GetRuleContext() antlr.RuleContext
+
+func (*ExternParameterListContext) IsExternParameterListContext()
+
+func (s *ExternParameterListContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string
+
+func (s *ExternParameterListContext) Type_(i int) ITypeContext
 
 type FieldInitContext struct {
 	antlr.BaseParserRuleContext
@@ -2089,8 +2142,7 @@ type IExternFunctionDeclContext interface {
 	LPAREN() antlr.TerminalNode
 	RPAREN() antlr.TerminalNode
 	STRING_LITERAL() antlr.TerminalNode
-	ParameterList() IParameterListContext
-	ARROW() antlr.TerminalNode
+	ExternParameterList() IExternParameterListContext
 	Type_() ITypeContext
 
 	// IsExternFunctionDeclContext differentiates from other interfaces.
@@ -2111,6 +2163,24 @@ type IExternMemberContext interface {
 	IsExternMemberContext()
 }
     IExternMemberContext is an interface to support dynamic dispatch.
+
+type IExternParameterListContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	AllType_() []ITypeContext
+	Type_(i int) ITypeContext
+	AllCOMMA() []antlr.TerminalNode
+	COMMA(i int) antlr.TerminalNode
+	ELLIPSIS() antlr.TerminalNode
+
+	// IsExternParameterListContext differentiates from other interfaces.
+	IsExternParameterListContext()
+}
+    IExternParameterListContext is an interface to support dynamic dispatch.
 
 type IFieldInitContext interface {
 	antlr.ParserRuleContext
