@@ -8,173 +8,128 @@ import "github.com/antlr4-go/antlr/v4"
 type ArcParserListener interface {
 	antlr.ParseTreeListener
 
-	// EnterProgram is called when entering the program production.
-	EnterProgram(c *ProgramContext)
+	// EnterCompilationUnit is called when entering the compilationUnit production.
+	EnterCompilationUnit(c *CompilationUnitContext)
 
-	// EnterDeclaration is called when entering the declaration production.
-	EnterDeclaration(c *DeclarationContext)
+	// EnterImportDecl is called when entering the importDecl production.
+	EnterImportDecl(c *ImportDeclContext)
 
-	// EnterVariableDecl is called when entering the variableDecl production.
-	EnterVariableDecl(c *VariableDeclContext)
+	// EnterImportSpec is called when entering the importSpec production.
+	EnterImportSpec(c *ImportSpecContext)
 
-	// EnterFunctionDecl is called when entering the functionDecl production.
-	EnterFunctionDecl(c *FunctionDeclContext)
+	// EnterNamespaceDecl is called when entering the namespaceDecl production.
+	EnterNamespaceDecl(c *NamespaceDeclContext)
+
+	// EnterTopLevelDecl is called when entering the topLevelDecl production.
+	EnterTopLevelDecl(c *TopLevelDeclContext)
 
 	// EnterExternDecl is called when entering the externDecl production.
 	EnterExternDecl(c *ExternDeclContext)
 
+	// EnterExternMember is called when entering the externMember production.
+	EnterExternMember(c *ExternMemberContext)
+
 	// EnterExternFunctionDecl is called when entering the externFunctionDecl production.
 	EnterExternFunctionDecl(c *ExternFunctionDeclContext)
+
+	// EnterFunctionDecl is called when entering the functionDecl production.
+	EnterFunctionDecl(c *FunctionDeclContext)
 
 	// EnterParameterList is called when entering the parameterList production.
 	EnterParameterList(c *ParameterListContext)
 
-	// EnterExternParameterList is called when entering the externParameterList production.
-	EnterExternParameterList(c *ExternParameterListContext)
-
 	// EnterParameter is called when entering the parameter production.
 	EnterParameter(c *ParameterContext)
-
-	// EnterReturnType is called when entering the returnType production.
-	EnterReturnType(c *ReturnTypeContext)
 
 	// EnterStructDecl is called when entering the structDecl production.
 	EnterStructDecl(c *StructDeclContext)
 
-	// EnterStructFieldList is called when entering the structFieldList production.
-	EnterStructFieldList(c *StructFieldListContext)
-
 	// EnterStructField is called when entering the structField production.
 	EnterStructField(c *StructFieldContext)
 
-	// EnterBlock is called when entering the block production.
-	EnterBlock(c *BlockContext)
+	// EnterVariableDecl is called when entering the variableDecl production.
+	EnterVariableDecl(c *VariableDeclContext)
 
-	// EnterVarDeclStmt is called when entering the VarDeclStmt production.
-	EnterVarDeclStmt(c *VarDeclStmtContext)
+	// EnterConstDecl is called when entering the constDecl production.
+	EnterConstDecl(c *ConstDeclContext)
 
-	// EnterAssignStmt is called when entering the AssignStmt production.
-	EnterAssignStmt(c *AssignStmtContext)
-
-	// EnterStoreStmt is called when entering the StoreStmt production.
-	EnterStoreStmt(c *StoreStmtContext)
-
-	// EnterReturnStmt is called when entering the ReturnStmt production.
-	EnterReturnStmt(c *ReturnStmtContext)
-
-	// EnterIfStmt is called when entering the IfStmt production.
-	EnterIfStmt(c *IfStmtContext)
-
-	// EnterExprStmt is called when entering the ExprStmt production.
-	EnterExprStmt(c *ExprStmtContext)
-
-	// EnterIfStatement is called when entering the ifStatement production.
-	EnterIfStatement(c *IfStatementContext)
-
-	// EnterPrimitiveTypeSpec is called when entering the PrimitiveTypeSpec production.
-	EnterPrimitiveTypeSpec(c *PrimitiveTypeSpecContext)
-
-	// EnterPointerType is called when entering the PointerType production.
-	EnterPointerType(c *PointerTypeContext)
-
-	// EnterReferenceType is called when entering the ReferenceType production.
-	EnterReferenceType(c *ReferenceTypeContext)
-
-	// EnterVectorType is called when entering the VectorType production.
-	EnterVectorType(c *VectorTypeContext)
-
-	// EnterMapType is called when entering the MapType production.
-	EnterMapType(c *MapTypeContext)
-
-	// EnterStructType is called when entering the StructType production.
-	EnterStructType(c *StructTypeContext)
+	// EnterType is called when entering the type production.
+	EnterType(c *TypeContext)
 
 	// EnterPrimitiveType is called when entering the primitiveType production.
 	EnterPrimitiveType(c *PrimitiveTypeContext)
 
-	// EnterDerefExpr is called when entering the DerefExpr production.
-	EnterDerefExpr(c *DerefExprContext)
+	// EnterPointerType is called when entering the pointerType production.
+	EnterPointerType(c *PointerTypeContext)
 
-	// EnterComparisonExpr is called when entering the ComparisonExpr production.
-	EnterComparisonExpr(c *ComparisonExprContext)
+	// EnterReferenceType is called when entering the referenceType production.
+	EnterReferenceType(c *ReferenceTypeContext)
 
-	// EnterLogicalNotExpr is called when entering the LogicalNotExpr production.
-	EnterLogicalNotExpr(c *LogicalNotExprContext)
+	// EnterVectorType is called when entering the vectorType production.
+	EnterVectorType(c *VectorTypeContext)
 
-	// EnterLogicalAndExpr is called when entering the LogicalAndExpr production.
-	EnterLogicalAndExpr(c *LogicalAndExprContext)
+	// EnterMapType is called when entering the mapType production.
+	EnterMapType(c *MapTypeContext)
 
-	// EnterLogicalOrExpr is called when entering the LogicalOrExpr production.
-	EnterLogicalOrExpr(c *LogicalOrExprContext)
+	// EnterBlock is called when entering the block production.
+	EnterBlock(c *BlockContext)
 
-	// EnterEqualityExpr is called when entering the EqualityExpr production.
-	EnterEqualityExpr(c *EqualityExprContext)
+	// EnterStatement is called when entering the statement production.
+	EnterStatement(c *StatementContext)
 
-	// EnterMulDivModExpr is called when entering the MulDivModExpr production.
-	EnterMulDivModExpr(c *MulDivModExprContext)
+	// EnterAssignmentStmt is called when entering the assignmentStmt production.
+	EnterAssignmentStmt(c *AssignmentStmtContext)
 
-	// EnterAddrOfExpr is called when entering the AddrOfExpr production.
-	EnterAddrOfExpr(c *AddrOfExprContext)
+	// EnterLeftHandSide is called when entering the leftHandSide production.
+	EnterLeftHandSide(c *LeftHandSideContext)
 
-	// EnterCastExpr is called when entering the CastExpr production.
-	EnterCastExpr(c *CastExprContext)
+	// EnterExpressionStmt is called when entering the expressionStmt production.
+	EnterExpressionStmt(c *ExpressionStmtContext)
 
-	// EnterPrimaryExpr is called when entering the PrimaryExpr production.
-	EnterPrimaryExpr(c *PrimaryExprContext)
+	// EnterReturnStmt is called when entering the returnStmt production.
+	EnterReturnStmt(c *ReturnStmtContext)
 
-	// EnterCallExpr is called when entering the CallExpr production.
-	EnterCallExpr(c *CallExprContext)
+	// EnterIfStmt is called when entering the ifStmt production.
+	EnterIfStmt(c *IfStmtContext)
 
-	// EnterFieldAccessExpr is called when entering the FieldAccessExpr production.
-	EnterFieldAccessExpr(c *FieldAccessExprContext)
+	// EnterDeferStmt is called when entering the deferStmt production.
+	EnterDeferStmt(c *DeferStmtContext)
 
-	// EnterAddSubExpr is called when entering the AddSubExpr production.
-	EnterAddSubExpr(c *AddSubExprContext)
+	// EnterExpression is called when entering the expression production.
+	EnterExpression(c *ExpressionContext)
 
-	// EnterAllocaExpr is called when entering the AllocaExpr production.
-	EnterAllocaExpr(c *AllocaExprContext)
+	// EnterLogicalOrExpression is called when entering the logicalOrExpression production.
+	EnterLogicalOrExpression(c *LogicalOrExpressionContext)
 
-	// EnterUnaryMinusExpr is called when entering the UnaryMinusExpr production.
-	EnterUnaryMinusExpr(c *UnaryMinusExprContext)
+	// EnterLogicalAndExpression is called when entering the logicalAndExpression production.
+	EnterLogicalAndExpression(c *LogicalAndExpressionContext)
 
-	// EnterIntLiteral is called when entering the IntLiteral production.
-	EnterIntLiteral(c *IntLiteralContext)
+	// EnterEqualityExpression is called when entering the equalityExpression production.
+	EnterEqualityExpression(c *EqualityExpressionContext)
 
-	// EnterFloatLiteral is called when entering the FloatLiteral production.
-	EnterFloatLiteral(c *FloatLiteralContext)
+	// EnterRelationalExpression is called when entering the relationalExpression production.
+	EnterRelationalExpression(c *RelationalExpressionContext)
 
-	// EnterStringLiteral is called when entering the StringLiteral production.
-	EnterStringLiteral(c *StringLiteralContext)
+	// EnterAdditiveExpression is called when entering the additiveExpression production.
+	EnterAdditiveExpression(c *AdditiveExpressionContext)
 
-	// EnterCharLiteral is called when entering the CharLiteral production.
-	EnterCharLiteral(c *CharLiteralContext)
+	// EnterMultiplicativeExpression is called when entering the multiplicativeExpression production.
+	EnterMultiplicativeExpression(c *MultiplicativeExpressionContext)
 
-	// EnterBoolLiteral is called when entering the BoolLiteral production.
-	EnterBoolLiteral(c *BoolLiteralContext)
+	// EnterUnaryExpression is called when entering the unaryExpression production.
+	EnterUnaryExpression(c *UnaryExpressionContext)
 
-	// EnterIdentifierExpr is called when entering the IdentifierExpr production.
-	EnterIdentifierExpr(c *IdentifierExprContext)
+	// EnterPostfixExpression is called when entering the postfixExpression production.
+	EnterPostfixExpression(c *PostfixExpressionContext)
 
-	// EnterStructLiteralExpr is called when entering the StructLiteralExpr production.
-	EnterStructLiteralExpr(c *StructLiteralExprContext)
+	// EnterPostfixOp is called when entering the postfixOp production.
+	EnterPostfixOp(c *PostfixOpContext)
 
-	// EnterVectorLiteralExpr is called when entering the VectorLiteralExpr production.
-	EnterVectorLiteralExpr(c *VectorLiteralExprContext)
+	// EnterPrimaryExpression is called when entering the primaryExpression production.
+	EnterPrimaryExpression(c *PrimaryExpressionContext)
 
-	// EnterMapLiteralExpr is called when entering the MapLiteralExpr production.
-	EnterMapLiteralExpr(c *MapLiteralExprContext)
-
-	// EnterParenExpr is called when entering the ParenExpr production.
-	EnterParenExpr(c *ParenExprContext)
-
-	// EnterStructLiteral is called when entering the structLiteral production.
-	EnterStructLiteral(c *StructLiteralContext)
-
-	// EnterFieldInitList is called when entering the fieldInitList production.
-	EnterFieldInitList(c *FieldInitListContext)
-
-	// EnterFieldInit is called when entering the fieldInit production.
-	EnterFieldInit(c *FieldInitContext)
+	// EnterLiteral is called when entering the literal production.
+	EnterLiteral(c *LiteralContext)
 
 	// EnterVectorLiteral is called when entering the vectorLiteral production.
 	EnterVectorLiteral(c *VectorLiteralContext)
@@ -185,176 +140,143 @@ type ArcParserListener interface {
 	// EnterMapEntry is called when entering the mapEntry production.
 	EnterMapEntry(c *MapEntryContext)
 
+	// EnterStructLiteral is called when entering the structLiteral production.
+	EnterStructLiteral(c *StructLiteralContext)
+
+	// EnterFieldInit is called when entering the fieldInit production.
+	EnterFieldInit(c *FieldInitContext)
+
 	// EnterArgumentList is called when entering the argumentList production.
 	EnterArgumentList(c *ArgumentListContext)
 
-	// ExitProgram is called when exiting the program production.
-	ExitProgram(c *ProgramContext)
+	// EnterCastExpression is called when entering the castExpression production.
+	EnterCastExpression(c *CastExpressionContext)
 
-	// ExitDeclaration is called when exiting the declaration production.
-	ExitDeclaration(c *DeclarationContext)
+	// EnterAllocaExpression is called when entering the allocaExpression production.
+	EnterAllocaExpression(c *AllocaExpressionContext)
 
-	// ExitVariableDecl is called when exiting the variableDecl production.
-	ExitVariableDecl(c *VariableDeclContext)
+	// ExitCompilationUnit is called when exiting the compilationUnit production.
+	ExitCompilationUnit(c *CompilationUnitContext)
 
-	// ExitFunctionDecl is called when exiting the functionDecl production.
-	ExitFunctionDecl(c *FunctionDeclContext)
+	// ExitImportDecl is called when exiting the importDecl production.
+	ExitImportDecl(c *ImportDeclContext)
+
+	// ExitImportSpec is called when exiting the importSpec production.
+	ExitImportSpec(c *ImportSpecContext)
+
+	// ExitNamespaceDecl is called when exiting the namespaceDecl production.
+	ExitNamespaceDecl(c *NamespaceDeclContext)
+
+	// ExitTopLevelDecl is called when exiting the topLevelDecl production.
+	ExitTopLevelDecl(c *TopLevelDeclContext)
 
 	// ExitExternDecl is called when exiting the externDecl production.
 	ExitExternDecl(c *ExternDeclContext)
 
+	// ExitExternMember is called when exiting the externMember production.
+	ExitExternMember(c *ExternMemberContext)
+
 	// ExitExternFunctionDecl is called when exiting the externFunctionDecl production.
 	ExitExternFunctionDecl(c *ExternFunctionDeclContext)
+
+	// ExitFunctionDecl is called when exiting the functionDecl production.
+	ExitFunctionDecl(c *FunctionDeclContext)
 
 	// ExitParameterList is called when exiting the parameterList production.
 	ExitParameterList(c *ParameterListContext)
 
-	// ExitExternParameterList is called when exiting the externParameterList production.
-	ExitExternParameterList(c *ExternParameterListContext)
-
 	// ExitParameter is called when exiting the parameter production.
 	ExitParameter(c *ParameterContext)
-
-	// ExitReturnType is called when exiting the returnType production.
-	ExitReturnType(c *ReturnTypeContext)
 
 	// ExitStructDecl is called when exiting the structDecl production.
 	ExitStructDecl(c *StructDeclContext)
 
-	// ExitStructFieldList is called when exiting the structFieldList production.
-	ExitStructFieldList(c *StructFieldListContext)
-
 	// ExitStructField is called when exiting the structField production.
 	ExitStructField(c *StructFieldContext)
 
-	// ExitBlock is called when exiting the block production.
-	ExitBlock(c *BlockContext)
+	// ExitVariableDecl is called when exiting the variableDecl production.
+	ExitVariableDecl(c *VariableDeclContext)
 
-	// ExitVarDeclStmt is called when exiting the VarDeclStmt production.
-	ExitVarDeclStmt(c *VarDeclStmtContext)
+	// ExitConstDecl is called when exiting the constDecl production.
+	ExitConstDecl(c *ConstDeclContext)
 
-	// ExitAssignStmt is called when exiting the AssignStmt production.
-	ExitAssignStmt(c *AssignStmtContext)
-
-	// ExitStoreStmt is called when exiting the StoreStmt production.
-	ExitStoreStmt(c *StoreStmtContext)
-
-	// ExitReturnStmt is called when exiting the ReturnStmt production.
-	ExitReturnStmt(c *ReturnStmtContext)
-
-	// ExitIfStmt is called when exiting the IfStmt production.
-	ExitIfStmt(c *IfStmtContext)
-
-	// ExitExprStmt is called when exiting the ExprStmt production.
-	ExitExprStmt(c *ExprStmtContext)
-
-	// ExitIfStatement is called when exiting the ifStatement production.
-	ExitIfStatement(c *IfStatementContext)
-
-	// ExitPrimitiveTypeSpec is called when exiting the PrimitiveTypeSpec production.
-	ExitPrimitiveTypeSpec(c *PrimitiveTypeSpecContext)
-
-	// ExitPointerType is called when exiting the PointerType production.
-	ExitPointerType(c *PointerTypeContext)
-
-	// ExitReferenceType is called when exiting the ReferenceType production.
-	ExitReferenceType(c *ReferenceTypeContext)
-
-	// ExitVectorType is called when exiting the VectorType production.
-	ExitVectorType(c *VectorTypeContext)
-
-	// ExitMapType is called when exiting the MapType production.
-	ExitMapType(c *MapTypeContext)
-
-	// ExitStructType is called when exiting the StructType production.
-	ExitStructType(c *StructTypeContext)
+	// ExitType is called when exiting the type production.
+	ExitType(c *TypeContext)
 
 	// ExitPrimitiveType is called when exiting the primitiveType production.
 	ExitPrimitiveType(c *PrimitiveTypeContext)
 
-	// ExitDerefExpr is called when exiting the DerefExpr production.
-	ExitDerefExpr(c *DerefExprContext)
+	// ExitPointerType is called when exiting the pointerType production.
+	ExitPointerType(c *PointerTypeContext)
 
-	// ExitComparisonExpr is called when exiting the ComparisonExpr production.
-	ExitComparisonExpr(c *ComparisonExprContext)
+	// ExitReferenceType is called when exiting the referenceType production.
+	ExitReferenceType(c *ReferenceTypeContext)
 
-	// ExitLogicalNotExpr is called when exiting the LogicalNotExpr production.
-	ExitLogicalNotExpr(c *LogicalNotExprContext)
+	// ExitVectorType is called when exiting the vectorType production.
+	ExitVectorType(c *VectorTypeContext)
 
-	// ExitLogicalAndExpr is called when exiting the LogicalAndExpr production.
-	ExitLogicalAndExpr(c *LogicalAndExprContext)
+	// ExitMapType is called when exiting the mapType production.
+	ExitMapType(c *MapTypeContext)
 
-	// ExitLogicalOrExpr is called when exiting the LogicalOrExpr production.
-	ExitLogicalOrExpr(c *LogicalOrExprContext)
+	// ExitBlock is called when exiting the block production.
+	ExitBlock(c *BlockContext)
 
-	// ExitEqualityExpr is called when exiting the EqualityExpr production.
-	ExitEqualityExpr(c *EqualityExprContext)
+	// ExitStatement is called when exiting the statement production.
+	ExitStatement(c *StatementContext)
 
-	// ExitMulDivModExpr is called when exiting the MulDivModExpr production.
-	ExitMulDivModExpr(c *MulDivModExprContext)
+	// ExitAssignmentStmt is called when exiting the assignmentStmt production.
+	ExitAssignmentStmt(c *AssignmentStmtContext)
 
-	// ExitAddrOfExpr is called when exiting the AddrOfExpr production.
-	ExitAddrOfExpr(c *AddrOfExprContext)
+	// ExitLeftHandSide is called when exiting the leftHandSide production.
+	ExitLeftHandSide(c *LeftHandSideContext)
 
-	// ExitCastExpr is called when exiting the CastExpr production.
-	ExitCastExpr(c *CastExprContext)
+	// ExitExpressionStmt is called when exiting the expressionStmt production.
+	ExitExpressionStmt(c *ExpressionStmtContext)
 
-	// ExitPrimaryExpr is called when exiting the PrimaryExpr production.
-	ExitPrimaryExpr(c *PrimaryExprContext)
+	// ExitReturnStmt is called when exiting the returnStmt production.
+	ExitReturnStmt(c *ReturnStmtContext)
 
-	// ExitCallExpr is called when exiting the CallExpr production.
-	ExitCallExpr(c *CallExprContext)
+	// ExitIfStmt is called when exiting the ifStmt production.
+	ExitIfStmt(c *IfStmtContext)
 
-	// ExitFieldAccessExpr is called when exiting the FieldAccessExpr production.
-	ExitFieldAccessExpr(c *FieldAccessExprContext)
+	// ExitDeferStmt is called when exiting the deferStmt production.
+	ExitDeferStmt(c *DeferStmtContext)
 
-	// ExitAddSubExpr is called when exiting the AddSubExpr production.
-	ExitAddSubExpr(c *AddSubExprContext)
+	// ExitExpression is called when exiting the expression production.
+	ExitExpression(c *ExpressionContext)
 
-	// ExitAllocaExpr is called when exiting the AllocaExpr production.
-	ExitAllocaExpr(c *AllocaExprContext)
+	// ExitLogicalOrExpression is called when exiting the logicalOrExpression production.
+	ExitLogicalOrExpression(c *LogicalOrExpressionContext)
 
-	// ExitUnaryMinusExpr is called when exiting the UnaryMinusExpr production.
-	ExitUnaryMinusExpr(c *UnaryMinusExprContext)
+	// ExitLogicalAndExpression is called when exiting the logicalAndExpression production.
+	ExitLogicalAndExpression(c *LogicalAndExpressionContext)
 
-	// ExitIntLiteral is called when exiting the IntLiteral production.
-	ExitIntLiteral(c *IntLiteralContext)
+	// ExitEqualityExpression is called when exiting the equalityExpression production.
+	ExitEqualityExpression(c *EqualityExpressionContext)
 
-	// ExitFloatLiteral is called when exiting the FloatLiteral production.
-	ExitFloatLiteral(c *FloatLiteralContext)
+	// ExitRelationalExpression is called when exiting the relationalExpression production.
+	ExitRelationalExpression(c *RelationalExpressionContext)
 
-	// ExitStringLiteral is called when exiting the StringLiteral production.
-	ExitStringLiteral(c *StringLiteralContext)
+	// ExitAdditiveExpression is called when exiting the additiveExpression production.
+	ExitAdditiveExpression(c *AdditiveExpressionContext)
 
-	// ExitCharLiteral is called when exiting the CharLiteral production.
-	ExitCharLiteral(c *CharLiteralContext)
+	// ExitMultiplicativeExpression is called when exiting the multiplicativeExpression production.
+	ExitMultiplicativeExpression(c *MultiplicativeExpressionContext)
 
-	// ExitBoolLiteral is called when exiting the BoolLiteral production.
-	ExitBoolLiteral(c *BoolLiteralContext)
+	// ExitUnaryExpression is called when exiting the unaryExpression production.
+	ExitUnaryExpression(c *UnaryExpressionContext)
 
-	// ExitIdentifierExpr is called when exiting the IdentifierExpr production.
-	ExitIdentifierExpr(c *IdentifierExprContext)
+	// ExitPostfixExpression is called when exiting the postfixExpression production.
+	ExitPostfixExpression(c *PostfixExpressionContext)
 
-	// ExitStructLiteralExpr is called when exiting the StructLiteralExpr production.
-	ExitStructLiteralExpr(c *StructLiteralExprContext)
+	// ExitPostfixOp is called when exiting the postfixOp production.
+	ExitPostfixOp(c *PostfixOpContext)
 
-	// ExitVectorLiteralExpr is called when exiting the VectorLiteralExpr production.
-	ExitVectorLiteralExpr(c *VectorLiteralExprContext)
+	// ExitPrimaryExpression is called when exiting the primaryExpression production.
+	ExitPrimaryExpression(c *PrimaryExpressionContext)
 
-	// ExitMapLiteralExpr is called when exiting the MapLiteralExpr production.
-	ExitMapLiteralExpr(c *MapLiteralExprContext)
-
-	// ExitParenExpr is called when exiting the ParenExpr production.
-	ExitParenExpr(c *ParenExprContext)
-
-	// ExitStructLiteral is called when exiting the structLiteral production.
-	ExitStructLiteral(c *StructLiteralContext)
-
-	// ExitFieldInitList is called when exiting the fieldInitList production.
-	ExitFieldInitList(c *FieldInitListContext)
-
-	// ExitFieldInit is called when exiting the fieldInit production.
-	ExitFieldInit(c *FieldInitContext)
+	// ExitLiteral is called when exiting the literal production.
+	ExitLiteral(c *LiteralContext)
 
 	// ExitVectorLiteral is called when exiting the vectorLiteral production.
 	ExitVectorLiteral(c *VectorLiteralContext)
@@ -365,6 +287,18 @@ type ArcParserListener interface {
 	// ExitMapEntry is called when exiting the mapEntry production.
 	ExitMapEntry(c *MapEntryContext)
 
+	// ExitStructLiteral is called when exiting the structLiteral production.
+	ExitStructLiteral(c *StructLiteralContext)
+
+	// ExitFieldInit is called when exiting the fieldInit production.
+	ExitFieldInit(c *FieldInitContext)
+
 	// ExitArgumentList is called when exiting the argumentList production.
 	ExitArgumentList(c *ArgumentListContext)
+
+	// ExitCastExpression is called when exiting the castExpression production.
+	ExitCastExpression(c *CastExpressionContext)
+
+	// ExitAllocaExpression is called when exiting the allocaExpression production.
+	ExitAllocaExpression(c *AllocaExpressionContext)
 }

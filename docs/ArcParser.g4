@@ -1,160 +1,223 @@
 parser grammar ArcParser;
 
 options {
-    tokenVocab = ArcLexer;
+    tokenVocab=ArcLexer;
 }
 
-// Entry point
-program
-    : (declaration)* EOF
+// Compilation Unit
+compilationUnit
+    : (importDecl | namespaceDecl | topLevelDecl)* EOF
     ;
 
-// Top-level declarations
-declaration
+// Import Declaration
+importDecl
+    : IMPORT IMPORT_PATH
+    | IMPORT LPAREN importSpec* RPAREN
+    ;
+
+importSpec
+    : IMPORT_PATH
+    ;
+
+// Namespace Declaration
+namespaceDecl
+    : NAMESPACE IDENTIFIER
+    ;
+
+// Top Level Declarations
+topLevelDecl
     : functionDecl
-    | externDecl        // Added
     | structDecl
     | variableDecl
+    | constDecl
+    | externDecl
     ;
 
-// Variable declarations
-variableDecl
-    : LET IDENTIFIER (COLON type)? ASSIGN expression
-    | CONST IDENTIFIER (COLON type)? ASSIGN expression
-    ;
-
-// Function declaration
-// Added optional ARROW ('->') to support 'func name() -> int' style if desired
-functionDecl
-    : FUNC IDENTIFIER LPAREN parameterList? RPAREN (ARROW? returnType)? block
-    ;
-
-// Extern declarations (Added)
+// Extern Declaration
 externDecl
-    : EXTERN IDENTIFIER LBRACE externFunctionDecl* RBRACE
+    : EXTERN NAMESPACE IDENTIFIER LBRACE externMember* RBRACE
+    ;
+
+externMember
+    : externFunctionDecl
     ;
 
 externFunctionDecl
-    : FUNC IDENTIFIER LPAREN externParameterList? RPAREN (ARROW? returnType)?
+    : FUNC IDENTIFIER (STRING_LITERAL)? LPAREN parameterList? RPAREN (ARROW type)?
+    ;
+
+// Function Declaration
+functionDecl
+    : FUNC IDENTIFIER LPAREN parameterList? RPAREN type? block
     ;
 
 parameterList
-    : parameter (COMMA parameter)*
-    ;
-
-// Externs support variadic arguments (...)
-externParameterList
     : parameter (COMMA parameter)* (COMMA ELLIPSIS)?
     | ELLIPSIS
     ;
 
 parameter
-    : IDENTIFIER COLON type
+    : SELF? IDENTIFIER COLON type
     ;
 
-returnType
-    : type
-    ;
-
-// Struct declaration
+// Struct Declaration
 structDecl
-    : STRUCT IDENTIFIER LBRACE structFieldList RBRACE
-    ;
-
-structFieldList
-    : structField (structField)*
+    : STRUCT IDENTIFIER LBRACE structField* RBRACE
     ;
 
 structField
     : IDENTIFIER COLON type
     ;
 
-// Block of statements
-block
-    : LBRACE (statement)* RBRACE
+// Variable Declaration
+variableDecl
+    : LET IDENTIFIER (COLON type)? ASSIGN expression
     ;
 
-// Statements
-statement
-    : variableDecl                                          # VarDeclStmt
-    | IDENTIFIER ASSIGN expression                          # AssignStmt
-    | STAR IDENTIFIER ASSIGN expression                     # StoreStmt
-    | RETURN expression?                                    # ReturnStmt
-    | ifStatement                                           # IfStmt
-    | expression                                            # ExprStmt
+// Constant Declaration
+constDecl
+    : CONST IDENTIFIER (COLON type)? ASSIGN expression
     ;
 
-ifStatement
-    : IF expression block (ELSE block)?
-    ;
-
-// Types
+// Type System
 type
-    : primitiveType                                         # PrimitiveTypeSpec
-    | STAR type                                             # PointerType
-    | AMP type                                              # ReferenceType
-    | VECTOR LT type GT                                     # VectorType
-    | MAP LT type COMMA type GT                             # MapType
-    | IDENTIFIER                                            # StructType
+    : primitiveType
+    | pointerType
+    | referenceType
+    | vectorType
+    | mapType
+    | IDENTIFIER  // Named types (structs, etc.)
     ;
 
 primitiveType
-    : INT32
-    | INT64
-    | FLOAT32
-    | FLOAT64
-    | BOOL
+    : INT8 | INT16 | INT32 | INT64
+    | UINT8 | UINT16 | UINT32 | UINT64
+    | USIZE | ISIZE
+    | FLOAT32 | FLOAT64
+    | BYTE | BOOL | RUNE
     | STRING
-    | BYTE
-    | CHAR
-    | VOID  // Added
+    | VOID
     ;
 
-// Expressions (with precedence)
+pointerType
+    : STAR type
+    ;
+
+referenceType
+    : AMP type
+    ;
+
+vectorType
+    : VECTOR LT type GT
+    ;
+
+mapType
+    : MAP LT type COMMA type GT
+    ;
+
+// Statements
+block
+    : LBRACE statement* RBRACE
+    ;
+
+statement
+    : variableDecl
+    | constDecl
+    | assignmentStmt
+    | expressionStmt
+    | returnStmt
+    | ifStmt
+    | deferStmt
+    | block
+    ;
+
+assignmentStmt
+    : leftHandSide ASSIGN expression
+    ;
+
+leftHandSide
+    : IDENTIFIER
+    | STAR expression  // Pointer dereference
+    | expression DOT IDENTIFIER  // Field access
+    ;
+
+expressionStmt
+    : expression
+    ;
+
+returnStmt
+    : RETURN expression?
+    ;
+
+ifStmt
+    : IF expression block (ELSE IF expression block)* (ELSE block)?
+    ;
+
+deferStmt
+    : DEFER expression
+    ;
+
+// Expressions (with proper precedence, lowest to highest)
 expression
-    : primary                                               # PrimaryExpr
-    | STAR expression                                       # DerefExpr
-    | AMP expression                                        # AddrOfExpr
-    | MINUS expression                                      # UnaryMinusExpr
-    | NOT expression                                        # LogicalNotExpr
-    | ALLOCA LPAREN type RPAREN                             # AllocaExpr
-    | CAST LT type GT LPAREN expression RPAREN              # CastExpr
-    | expression op=(STAR | SLASH | PERCENT) expression     # MulDivModExpr
-    | expression op=(PLUS | MINUS) expression               # AddSubExpr
-    | expression op=(LT | LE | GT | GE) expression          # ComparisonExpr
-    | expression op=(EQ | NE) expression                    # EqualityExpr
-    | expression AND expression                             # LogicalAndExpr
-    | expression OR expression                              # LogicalOrExpr
-    // Moved CallExpr here and changed to 'expression' to support io.printf(...)
-    | expression LPAREN argumentList? RPAREN                # CallExpr 
-    | expression DOT IDENTIFIER                             # FieldAccessExpr
+    : logicalOrExpression
     ;
 
-primary
-    : INTEGER_LITERAL                                       # IntLiteral
-    | FLOAT_LITERAL                                         # FloatLiteral
-    | STRING_LITERAL                                        # StringLiteral
-    | CHAR_LITERAL                                          # CharLiteral
-    | TRUE                                                  # BoolLiteral
-    | FALSE                                                 # BoolLiteral
-    | IDENTIFIER                                            # IdentifierExpr
-    | structLiteral                                         # StructLiteralExpr
-    | vectorLiteral                                         # VectorLiteralExpr
-    | mapLiteral                                            # MapLiteralExpr
-    | LPAREN expression RPAREN                              # ParenExpr
+logicalOrExpression
+    : logicalAndExpression (OR logicalAndExpression)*
     ;
 
-// Literals
-structLiteral
-    : IDENTIFIER LBRACE fieldInitList? RBRACE
+logicalAndExpression
+    : equalityExpression (AND equalityExpression)*
     ;
 
-fieldInitList
-    : fieldInit (COMMA fieldInit)*
+equalityExpression
+    : relationalExpression ((EQ | NE) relationalExpression)*
     ;
 
-fieldInit
-    : IDENTIFIER COLON expression
+relationalExpression
+    : additiveExpression ((LT | LE | GT | GE) additiveExpression)*
+    ;
+
+additiveExpression
+    : multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
+    ;
+
+multiplicativeExpression
+    : unaryExpression ((STAR | SLASH | PERCENT) unaryExpression)*
+    ;
+
+unaryExpression
+    : (MINUS | NOT | STAR | AMP) unaryExpression
+    | postfixExpression
+    ;
+
+postfixExpression
+    : primaryExpression (postfixOp)*
+    ;
+
+postfixOp
+    : DOT IDENTIFIER
+    | DOT IDENTIFIER LPAREN argumentList? RPAREN
+    | LPAREN argumentList? RPAREN
+    ;
+
+primaryExpression
+    : literal
+    | IDENTIFIER
+    | LPAREN expression RPAREN
+    | castExpression
+    | allocaExpression
+    | structLiteral
+    ;
+
+literal
+    : INTEGER_LITERAL
+    | FLOAT_LITERAL
+    | STRING_LITERAL
+    | CHAR_LITERAL
+    | BOOLEAN_LITERAL
+    | vectorLiteral
+    | mapLiteral
     ;
 
 vectorLiteral
@@ -169,6 +232,22 @@ mapEntry
     : expression COLON expression
     ;
 
+structLiteral
+    : IDENTIFIER LBRACE (fieldInit (COMMA fieldInit)*)? RBRACE
+    ;
+
+fieldInit
+    : IDENTIFIER COLON expression
+    ;
+
 argumentList
     : expression (COMMA expression)*
+    ;
+
+castExpression
+    : CAST LT type GT LPAREN expression RPAREN
+    ;
+
+allocaExpression
+    : ALLOCA LPAREN type (COMMA expression)? RPAREN
     ;
