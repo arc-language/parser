@@ -1,5 +1,8 @@
 
 
+THIS is the parser package 
+package "github.com/arc-language/parser"
+
 CONSTANTS
 
 const (
